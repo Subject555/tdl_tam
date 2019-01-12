@@ -1,0 +1,5 @@
+     LOADL 3
+     LOADL 3
+     SUBR  INEq
+	SUBR    BOut
+	HALT   

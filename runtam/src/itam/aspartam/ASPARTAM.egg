@@ -1,0 +1,342 @@
+option version = 1.0.1 ;
+option k = 2;
+option auto = true;
+
+syn output : ByteArrayOutputStream for PROG ; 
+inh table : TDS for INST, INSTS, CINST, CSTE;
+inh code : BINAIRE for INST, INSTS, CINST;
+syn dval : INTEGER for CINST;
+syn rval : INTEGER for CINST; 
+syn val : INTEGER for CSTE;
+syn sorte : INTEGER for CSTE; 
+
+space  separateur  is "[\n\r\t ]+";
+--space  separateur  is "[\t ]+"; 
+space comm  is    ";[^\n]*\n";
+sugar  cro    is    "\[";  
+sugar  crf    is    "\]";
+sugar  paro  is    "\(";
+sugar  parf  is    "\)"; 
+sugar  moins  is    "\-";
+sugar  load  is    "LOAD";
+sugar  loada  is    "LOADA";
+sugar  loadi  is    "LOADI";
+sugar  loadl  is    "LOADL";
+sugar  store  is    "STORE";
+sugar  storei  is    "STOREI";
+sugar  call  is    "CALL"; 
+sugar  calli  is    "CALLI";
+sugar  return  is    "RETURN";
+sugar  subr  is    "SUBR";
+sugar  push  is    "PUSH";
+sugar  pop    is    "POP";
+sugar  jump  is    "JUMP";
+sugar  jumpi  is    "JUMPI";
+sugar  jumpif  is    "JUMPIF"; 
+sugar  halt  is    "HALT";
+term  chaine  is    "\"([^\"]|\\.)*\"";
+term  car  is    "\'([^\']|\\.)\'";
+term  nb    is    "\-?[0-9]+";
+term  ident  is    "[0-9a-zA-Z_\$@#:\.\?\%\<\>]+";
+--term info is "\![^\n\r]*(\n|\r)";
+--sugar nl is "(\n|\r)";
+
+PROG -> #init INSTS #gen ;
+global
+  t : TDS;
+  c : BINAIRE;
+-- #init : initaliser la table  
+#init {
+  local 
+  do
+    -- write "Assembleur TAM (MG06)%N";
+      t := new TDS();
+    INSTS^table := t;
+    c := new BINAIRE(5000);
+    INSTS^code := c;
+  end
+ 
+  }
+
+#gen{
+  local
+  do
+  -- version pour ITAM
+  -- sinon mettre PROG^scanner.getFileIn()
+    PROG^output :=  c.sauver( t);
+  end
+  }
+
+INSTS -> INST INSTS;
+
+--INFO -> info ;
+--INFO -> nl ;
+
+INSTS -> ;
+-- rien
+
+INST -> load paro nb parf nb cro ident crf  #load_op ;
+--
+#load_op {
+  local
+    reg : INTEGER;
+  do
+    reg := INST^table.ref_reg(ident^txt);
+    if reg = -1 then
+      error(R_INC, ident^txt);
+    else
+    -- codage de l'instruction load (code 0)
+    call INST^code.ajouter(0,reg, INST^table.to_integer(nb^txt),  INST^table.to_integer(nb1^txt));
+  end
+    end
+  }
+--
+INST -> loada  CINST #loada_op ;
+
+--
+#loada_op {
+  local
+  do
+    call INST^code.ajouter(1,CINST^rval, 0,CINST^dval);
+  end
+  }
+--
+INST -> loadi paro nb parf #loadi_op ;
+--
+#loadi_op {
+  local
+  do
+    call INST^code.ajouter(2,0, INST^table.to_integer(nb^txt),0);
+  end
+}
+
+INST -> loadl CSTE #loadl_op ;
+
+#loadl_op {
+  local
+  do
+    call INST^code.ajouter(3,CSTE^sorte,0,CSTE^val);
+  end
+   }
+
+
+CSTE -> nb #cste ;
+--
+#cste {
+  local
+  do
+    CSTE^val := CSTE^table.to_integer(nb^txt);
+    CSTE^sorte := 0; -- entier
+  end
+   }
+
+CSTE -> chaine #cste ;
+#cste {
+  local
+
+  do
+    CSTE^val :=CSTE^table.declarer_chaine(chaine^txt);
+    CSTE^sorte := 1; -- chaine
+  end
+   }
+CSTE -> car #cste ;
+#cste {
+  local
+
+  do
+    CSTE^val :=CSTE^table.to_char(car^txt);
+    CSTE^sorte := 2; -- char
+  end
+   }
+ 
+INST -> store paro nb parf nb cro ident crf  #store_op ;
+--
+#store_op {
+  local
+    reg : INTEGER;
+  do
+    reg := INST^table.ref_reg(ident^txt);
+    if reg = -1 then
+      error(R_INC, ident^txt);
+    else
+      call INST^code.ajouter(4,reg,  INST^table.to_integer(nb^txt),INST^table.to_integer(nb1^txt));
+    end
+  end
+  }
+
+INST -> storei paro nb parf #storei_op ;
+--
+#storei_op {
+  local
+  do
+    call INST^code.ajouter(5,0,  INST^table.to_integer(nb^txt),0);
+  end
+  }
+
+INST -> call paro ident parf CINST #call_op ;
+
+#call_op {
+  local
+    reg : INTEGER;
+  do
+    reg := INST^table.ref_reg(ident^txt);
+    if reg = -1 then
+      error(R_INC, ident^txt);
+    else
+      call INST^code.ajouter(6,CINST^rval,reg  ,CINST^dval);
+    end
+  end
+  }
+
+INST -> calli #calli_op ;
+--
+#calli_op {
+  local
+  do
+    call INST^code.ajouter(7,0, 0,0);
+  end
+  }
+
+INST -> return paro nb parf nb #return_op ;
+--
+#return_op {
+  local
+  do
+    call INST^code.ajouter(8,0, INST^table.to_integer(nb^txt), INST^table.to_integer(nb1^txt));
+  end
+  }
+
+INST -> subr ident #subr_op ;
+--
+#subr_op {
+  local
+    s : INTEGER;
+  do
+    s := INST^table.ref_subr(ident^txt);
+    if s = -1 then
+      error(S_INC, ident^txt);
+    else
+      call INST^code.ajouter(9,0, 0,s);
+       end
+  end
+  }
+
+INST -> ident #label_op ;
+--
+#label_op {
+  local
+    i : INFO;
+    e : ETIQUETTE;
+    adr : INTEGER;
+  do
+    e := nil;
+    adr := INST^code.get_adresse();
+    i := INST^table.chercherLocalement(ident^txt.toLowerCase());
+    if i = nil then
+       e:= INST^table.declarerEtiquette(ident^txt);
+    elseif i.estEtiquette() = false then
+      error(L_ERR, ident^txt);
+    else
+       -- mise a jour des references puisque on connait sa valeur
+      e := i.getLabel();
+      end
+      call e.maj_dep(adr);
+     -- write "Etiquette " + e + "\n";
+      call INST^code.maj_refs(e);
+    
+  end
+  }
+
+INST -> push nb #push_op ;
+--
+#push_op {
+  local
+  do
+    call INST^code.ajouter(10,0, 0,INST^table.to_integer(nb^txt));
+  end
+  }
+
+INST -> pop paro nb parf nb #pop_op ;
+--
+#pop_op {
+  local
+  do
+    call INST^code.ajouter(11,0,  INST^table.to_integer(nb^txt),INST^table.to_integer(nb1^txt));
+  end
+  }
+
+INST -> jump CINST #jump_op ;
+#jump_op {
+  local
+  do
+    call INST^code.ajouter(12,CINST^rval, 0,CINST^dval);
+  end
+  }
+
+INST -> jumpi #jumpi_op ;
+--
+#jumpi_op {
+  local
+  do
+    call INST^code.ajouter(13,0, 0,0);
+  end
+  }
+
+INST -> jumpif paro nb parf CINST #jumpif_op ;
+
+#jumpif_op {
+  local
+  do
+    call INST^code.ajouter(14,CINST^rval, INST^table.to_integer(nb^txt),CINST^dval);
+  end
+  }
+
+INST -> halt #halt_op ;
+--
+#halt_op {
+  local
+  do
+    call INST^code.ajouter(15,0, 0,0);
+  end
+  }
+
+CINST -> nb cro ident crf  #dr_op ;
+--
+#dr_op {
+  local
+    r : INTEGER;
+  do
+    CINST^dval  := CINST^table.to_integer(nb^txt);
+    CINST^rval := CINST^table.ref_reg(ident^txt);
+  end
+  }
+
+CINST -> ident #ident_op ;
+--
+#ident_op {
+  local
+     i : INFO;
+    e : ETIQUETTE;
+    adr : INTEGER;
+  do
+     e := nil;
+     i := CINST^table.chercherLocalement(ident^txt.toLowerCase());
+     if i = nil then
+       e := CINST^table.declarerEtiquette(ident^txt);
+     elseif i.estEtiquette() = false then
+        error(L_ERR, ident^txt);
+     else 
+       e := i.getLabel();
+     end
+--  e := CINST^table.ref_loc(ident^txt);
+    adr := CINST^code.get_adresse();
+    call e.ajouter_ref(adr);
+    CINST^rval := e.get_reg();
+    CINST^dval := e.get_dep();
+  end
+  }
+
+
+
+end
+

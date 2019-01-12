@@ -1,0 +1,9 @@
+	PUSH       1
+	LOADL       99
+	LOAD   (1) 1[SB]
+	STORE   (1) 0[SB]
+	LOAD   (1) 0[SB]
+	LOAD   (1) 1[SB]
+	SUBR    IAdd
+	SUBR    IOut
+	HALT   

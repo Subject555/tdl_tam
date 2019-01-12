@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="runtam" default="main" basedir=".">
+
+  <property name="src.dir" value="src"/>
+  <property name="bin.dir" value="bin"/>
+
+  <path id="project.class.path">
+    <pathelement location="eggc.jar"/>
+  </path>
+
+  <target name="clean">
+    <delete dir="${bin.dir}"/>
+    <delete file="runtam_part.jar"/>
+  </target>
+
+  <target name="init">
+    <mkdir dir="${bin.dir}"/>
+  </target>
+
+  <target name="compile" depends="init">
+    <javac srcdir="${src.dir}"
+           destdir="${bin.dir}"
+           includeantruntime="false">
+      <classpath refid="project.class.path"/>
+    </javac>
+  </target>
+
+  <target name="installprop">
+    <copy todir="${bin.dir}">
+      <fileset dir="${src.dir}">
+        <include name="**/*.properties"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="partialjar" depends="compile,installprop">
+    <jar jarfile="runtam_part.jar" basedir="${bin.dir}"/>
+  </target>
+  
+  <target name="jar" depends="partialjar">
+    <jar destfile="runtam.jar"
+         manifest="MANIFEST.MF">
+      <zipgroupfileset dir="." includes="runtam_part.jar eggc.jar"/>
+    </jar>
+  </target>
+
+  <target name="main" depends="jar">
+  </target>
+</project>

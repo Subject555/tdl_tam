@@ -1,0 +1,30 @@
+B /opt/opam/4.06.0/lib/base
+B /opt/opam/4.06.0/lib/base/caml
+B /opt/opam/4.06.0/lib/base/shadow_stdlib
+B /opt/opam/4.06.0/lib/fieldslib
+B /opt/opam/4.06.0/lib/ocaml
+B /opt/opam/4.06.0/lib/ppx_compare/runtime-lib
+B /opt/opam/4.06.0/lib/ppx_expect/collector
+B /opt/opam/4.06.0/lib/ppx_expect/common
+B /opt/opam/4.06.0/lib/ppx_expect/config
+B /opt/opam/4.06.0/lib/ppx_inline_test/config
+B /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib
+B /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib
+B /opt/opam/4.06.0/lib/sexplib0
+B _build/default/.rat.objs
+S /opt/opam/4.06.0/lib/base
+S /opt/opam/4.06.0/lib/base/caml
+S /opt/opam/4.06.0/lib/base/shadow_stdlib
+S /opt/opam/4.06.0/lib/fieldslib
+S /opt/opam/4.06.0/lib/ocaml
+S /opt/opam/4.06.0/lib/ppx_compare/runtime-lib
+S /opt/opam/4.06.0/lib/ppx_expect/collector
+S /opt/opam/4.06.0/lib/ppx_expect/common
+S /opt/opam/4.06.0/lib/ppx_expect/config
+S /opt/opam/4.06.0/lib/ppx_inline_test/config
+S /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib
+S /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib
+S /opt/opam/4.06.0/lib/sexplib0
+S .
+FLG -ppx '/home/mdubois5/2A/Trad_langues/Tp2/_build/default/.ppx/jbuild/ppx_inline_test+ppx_expect/ppx.exe --as-ppx --cookie '\''library-name="rat"'\'''
+FLG -open Rat -w -40

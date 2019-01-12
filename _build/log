@@ -1,0 +1,536 @@
+# jbuilder runtest
+# OCAMLPARAM: unset
+$ /usr/bin/nproc > /tmp/dunead7267.output
+$ /opt/opam/4.06.0/bin/ocamlc.opt -config > /tmp/dunea821cc.output
+$ (cd _build/default && .ppx/jbuild/ppx_inline_test+ppx_expect/ppx.exe --cookie 'library-name="rat"' -o testTam.pp.ml --impl testTam.ml --dump-ast)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamldep.opt -modules -impl testTam.pp.ml) > _build/default/.rat.objs/testTam.pp.ml.d
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlc.opt -w -40 -g -bin-annot -I .rat.objs -I /opt/opam/4.06.0/lib/base -I /opt/opam/4.06.0/lib/base/caml -I /opt/opam/4.06.0/lib/base/shadow_stdlib -I /opt/opam/4.06.0/lib/fieldslib -I /opt/opam/4.06.0/lib/ppx_compare/runtime-lib -I /opt/opam/4.06.0/lib/ppx_expect/collector -I /opt/opam/4.06.0/lib/ppx_expect/common -I /opt/opam/4.06.0/lib/ppx_expect/config -I /opt/opam/4.06.0/lib/ppx_inline_test/config -I /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib -I /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib -I /opt/opam/4.06.0/lib/sexplib0 -no-alias-deps -open Rat -o .rat.objs/rat__TestTam.cmo -c -impl testTam.pp.ml)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlc.opt -w -24 -bin-annot -I .rat.inline-tests -I /opt/opam/4.06.0/lib/base -I /opt/opam/4.06.0/lib/base/caml -I /opt/opam/4.06.0/lib/base/shadow_stdlib -I /opt/opam/4.06.0/lib/fieldslib -I /opt/opam/4.06.0/lib/ppx_assert/runtime-lib -I /opt/opam/4.06.0/lib/ppx_compare/runtime-lib -I /opt/opam/4.06.0/lib/ppx_expect/collector -I /opt/opam/4.06.0/lib/ppx_expect/common -I /opt/opam/4.06.0/lib/ppx_expect/config -I /opt/opam/4.06.0/lib/ppx_expect/evaluator -I /opt/opam/4.06.0/lib/ppx_expect/matcher -I /opt/opam/4.06.0/lib/ppx_inline_test/config -I /opt/opam/4.06.0/lib/ppx_inline_test/runner/lib -I /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib -I /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib -I /opt/opam/4.06.0/lib/ppxlib/print_diff -I /opt/opam/4.06.0/lib/re -I /opt/opam/4.06.0/lib/re/emacs -I /opt/opam/4.06.0/lib/re/glob -I /opt/opam/4.06.0/lib/seq -I /opt/opam/4.06.0/lib/sexplib0 -I /opt/opam/4.06.0/lib/stdio -I /opt/opam/4.06.0/lib/variantslib -I .rat.objs -no-alias-deps -o .rat.inline-tests/run.cmo -c -impl .rat.inline-tests/run.ml)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlopt.opt -w -40 -g -I .rat.objs -I /opt/opam/4.06.0/lib/base -I /opt/opam/4.06.0/lib/base/caml -I /opt/opam/4.06.0/lib/base/shadow_stdlib -I /opt/opam/4.06.0/lib/fieldslib -I /opt/opam/4.06.0/lib/ppx_compare/runtime-lib -I /opt/opam/4.06.0/lib/ppx_expect/collector -I /opt/opam/4.06.0/lib/ppx_expect/common -I /opt/opam/4.06.0/lib/ppx_expect/config -I /opt/opam/4.06.0/lib/ppx_inline_test/config -I /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib -I /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib -I /opt/opam/4.06.0/lib/sexplib0 -intf-suffix .ml -no-alias-deps -open Rat -o .rat.objs/rat__TestTam.cmx -c -impl testTam.pp.ml)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlopt.opt -w -40 -g -a -o rat.cmxa .rat.objs/rat.cmx .rat.objs/rat__Type.cmx .rat.objs/rat__Tds.cmx .rat.objs/rat__Ast.cmx .rat.objs/rat__Code.cmx .rat.objs/rat__Exceptions.cmx .rat.objs/rat__Parser.cmx .rat.objs/rat__Lexer.cmx .rat.objs/rat__Passe.cmx .rat.objs/rat__PasseCodeRatToTam.cmx .rat.objs/rat__PassePlacementRat.cmx .rat.objs/rat__PasseTdsRat.cmx .rat.objs/rat__PasseTypeRat.cmx .rat.objs/rat__Compilateur.cmx .rat.objs/rat__TestType.cmx .rat.objs/rat__TestTam.cmx .rat.objs/rat__TestTDS.cmx .rat.objs/rat__TestPlacement.cmx)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlopt.opt -w -24 -I .rat.inline-tests -I /opt/opam/4.06.0/lib/base -I /opt/opam/4.06.0/lib/base/caml -I /opt/opam/4.06.0/lib/base/shadow_stdlib -I /opt/opam/4.06.0/lib/fieldslib -I /opt/opam/4.06.0/lib/ppx_assert/runtime-lib -I /opt/opam/4.06.0/lib/ppx_compare/runtime-lib -I /opt/opam/4.06.0/lib/ppx_expect/collector -I /opt/opam/4.06.0/lib/ppx_expect/common -I /opt/opam/4.06.0/lib/ppx_expect/config -I /opt/opam/4.06.0/lib/ppx_expect/evaluator -I /opt/opam/4.06.0/lib/ppx_expect/matcher -I /opt/opam/4.06.0/lib/ppx_inline_test/config -I /opt/opam/4.06.0/lib/ppx_inline_test/runner/lib -I /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib -I /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib -I /opt/opam/4.06.0/lib/ppxlib/print_diff -I /opt/opam/4.06.0/lib/re -I /opt/opam/4.06.0/lib/re/emacs -I /opt/opam/4.06.0/lib/re/glob -I /opt/opam/4.06.0/lib/seq -I /opt/opam/4.06.0/lib/sexplib0 -I /opt/opam/4.06.0/lib/stdio -I /opt/opam/4.06.0/lib/variantslib -I .rat.objs -intf-suffix .ml -no-alias-deps -o .rat.inline-tests/run.cmx -c -impl .rat.inline-tests/run.ml)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlopt.opt -w -24 -o .rat.inline-tests/run.exe -linkall -I /opt/opam/4.06.0/lib/base -I /opt/opam/4.06.0/lib/base/caml -I /opt/opam/4.06.0/lib/base/shadow_stdlib -I /opt/opam/4.06.0/lib/fieldslib -I /opt/opam/4.06.0/lib/ppx_assert/runtime-lib -I /opt/opam/4.06.0/lib/ppx_compare/runtime-lib -I /opt/opam/4.06.0/lib/ppx_expect/collector -I /opt/opam/4.06.0/lib/ppx_expect/common -I /opt/opam/4.06.0/lib/ppx_expect/config -I /opt/opam/4.06.0/lib/ppx_expect/evaluator -I /opt/opam/4.06.0/lib/ppx_expect/matcher -I /opt/opam/4.06.0/lib/ppx_inline_test/config -I /opt/opam/4.06.0/lib/ppx_inline_test/runner/lib -I /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib -I /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib -I /opt/opam/4.06.0/lib/ppxlib/print_diff -I /opt/opam/4.06.0/lib/re -I /opt/opam/4.06.0/lib/re/emacs -I /opt/opam/4.06.0/lib/re/glob -I /opt/opam/4.06.0/lib/seq -I /opt/opam/4.06.0/lib/sexplib0 -I /opt/opam/4.06.0/lib/stdio -I /opt/opam/4.06.0/lib/variantslib -I . /opt/opam/4.06.0/lib/base/caml/caml.cmxa /opt/opam/4.06.0/lib/base/shadow_stdlib/shadow_stdlib.cmxa /opt/opam/4.06.0/lib/sexplib0/sexplib0.cmxa /opt/opam/4.06.0/lib/base/base.cmxa /opt/opam/4.06.0/lib/fieldslib/fieldslib.cmxa /opt/opam/4.06.0/lib/ppx_compare/runtime-lib/ppx_compare_lib.cmxa /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib/ppx_sexp_conv_lib.cmxa /opt/opam/4.06.0/lib/ppx_expect/common/expect_test_common.cmxa /opt/opam/4.06.0/lib/ppx_expect/config/expect_test_config.cmxa /opt/opam/4.06.0/lib/ppx_inline_test/config/inline_test_config.cmxa /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib/ppx_inline_test_lib.cmxa /opt/opam/4.06.0/lib/ppx_expect/collector/expect_test_collector.cmxa /opt/opam/4.06.0/lib/ocaml/unix.cmxa rat.cmxa /opt/opam/4.06.0/lib/ppx_inline_test/runner/lib/ppx_inline_test_runner_lib.cmxa /opt/opam/4.06.0/lib/ppx_assert/runtime-lib/ppx_assert_lib.cmxa /opt/opam/4.06.0/lib/seq/seq.cmxa /opt/opam/4.06.0/lib/re/re.cmxa /opt/opam/4.06.0/lib/re/emacs/re_emacs.cmxa /opt/opam/4.06.0/lib/re/glob/re_glob.cmxa /opt/opam/4.06.0/lib/stdio/stdio.cmxa /opt/opam/4.06.0/lib/variantslib/variantslib.cmxa /opt/opam/4.06.0/lib/ppx_expect/matcher/expect_test_matcher.cmxa /opt/opam/4.06.0/lib/ppxlib/print_diff/ppxlib_print_diff.cmxa /opt/opam/4.06.0/lib/ppx_expect/evaluator/ppx_expect_evaluator.cmxa .rat.inline-tests/run.cmx)
+$ (cd _build/default && .rat.inline-tests/run.exe inline-test-runner rat -source-tree-root . -diff-cmd -)
+> AST : 
+> Int add (Int a Int b ) = 
+> Declaration  : Int c = 0 
+> Affectation  : c = 0 + a  
+> Return a + b + c   
+> Declaration  : Int x = 3 
+> Affectation  : x = 4 
+> Constante  : y = 5
+> Declaration  : Int z = x + y  
+> Conditionnelle  : IF x < 0  
+> THEN 
+> Declaration  : Bool x = true 
+> Affectation  : x = false 
+> ELSE 
+> Declaration  : Rat x = [4 /3 ] 
+> Declaration  : Int e = call add(num x  y ) 
+>
+> AST : 
+> Int plus1 (Int a Int b ) = 
+> Declaration  : Int c = 1 
+> Return a + b + c   
+> Declaration  : Int x = 3 
+> Declaration  : Int y = 4 
+> Affichage  : call plus1(x y ) 
+> AST : 
+> Declaration  : Int x = 3 
+> AST : 
+> Declaration  : Rat x = [3 /4 ] 
+> AST : 
+> Declaration  : Bool x = true 
+> AST : 
+> Declaration  : Int x = true 
+> AST : 
+> Declaration  : Rat x = true 
+> AST : 
+> Declaration  : Bool x = 1 
+> AST : 
+> Declaration  : Rat x = 1 
+> AST : 
+> Declaration  : Int x = [2 /3 ] 
+> AST : 
+> Declaration  : Bool x = [2 /3 ] 
+> AST : 
+> Declaration  : Int x = 3 
+> Affectation  : x = 4 
+> AST : 
+> Declaration  : Bool x = true 
+> Affectation  : x = false 
+> AST : 
+> Declaration  : Rat x = [3 /4 ] 
+> Affectation  : x = [4 /5 ] 
+> AST : 
+> Declaration  : Rat x = [3 /4 ] 
+> Affectation  : x = 4 
+> AST : 
+> Declaration  : Int x = 4 
+> Affectation  : x = true 
+> AST : 
+> Declaration  : Rat x = [3 /4 ] 
+> Affectation  : x = true 
+> AST : 
+> Declaration  : Int x = 3 
+> Affectation  : x = [3 /4 ] 
+> AST : 
+> Declaration  : Bool x = true 
+> Affectation  : x = [3 /4 ] 
+> AST : 
+> Declaration  : Bool x = true 
+> Affectation  : x = 3 
+> AST : 
+> Conditionnelle  : IF true 
+> THEN 
+> Declaration  : Int x = 3 
+> ELSE 
+> Declaration  : Int x = 3 
+>
+> AST : 
+> Conditionnelle  : IF 4 
+> THEN 
+> Declaration  : Int x = 3 
+> ELSE 
+> Declaration  : Int x = 3 
+>
+> AST : 
+> Conditionnelle  : IF [4 /3 ] 
+> THEN 
+> Declaration  : Int x = 3 
+> ELSE 
+> Declaration  : Int x = 3 
+>
+> AST : 
+> Declaration  : Bool x = true 
+> Conditionnelle  : IF x 
+> THEN 
+> Declaration  : Int x = 3 
+> ELSE 
+> Declaration  : Int x = 3 
+>
+> AST : 
+> Declaration  : Int x = 4 
+> Conditionnelle  : IF x 
+> THEN 
+> Declaration  : Int x = 3 
+> ELSE 
+> Declaration  : Int x = 3 
+>
+> AST : 
+> Declaration  : Rat x = [3 /4 ] 
+> Conditionnelle  : IF x 
+> THEN 
+> Declaration  : Int x = 3 
+> ELSE 
+> Declaration  : Int x = 3 
+>
+> AST : 
+> TantQue  : TQ true 
+> FAIRE 
+> Declaration  : Int x = 3 
+>
+> AST : 
+> TantQue  : TQ 3 
+> FAIRE 
+> Declaration  : Int x = 3 
+>
+> AST : 
+> TantQue  : TQ [3 /4 ] 
+> FAIRE 
+> Declaration  : Int x = 3 
+>
+> AST : 
+> Declaration  : Bool x = true 
+> TantQue  : TQ x 
+> FAIRE 
+> Declaration  : Int x = 3 
+>
+> AST : 
+> Declaration  : Int x = 3 
+> TantQue  : TQ x 
+> FAIRE 
+> Declaration  : Int x = 3 
+>
+> AST : 
+> Declaration  : Rat x = [3 /4 ] 
+> TantQue  : TQ x 
+> FAIRE 
+> Declaration  : Int x = 3 
+>
+> AST : 
+> Affichage  : 3 
+> AST : 
+> Affichage  : [3 /4 ] 
+> AST : 
+> Affichage  : true 
+> AST : 
+> Int add1 (Int x Int y ) = 
+> Declaration  : Int z = x + y  
+> Return z + 1  
+> Declaration  : Int x = call add1(3 4 ) 
+> AST : 
+> Int add1 (Int x Int y ) = 
+> Declaration  : Int z = x + y  
+> Return z + 1  
+> Declaration  : Int z = 3 
+> Declaration  : Int x = call add1(z 4 ) 
+> AST : 
+> Int add1 (Int x Int y ) = 
+> Declaration  : Int z = x + y  
+> Return z + 1  
+> Constante  : z = 3
+> Declaration  : Int x = call add1(z 4 ) 
+> AST : 
+> Int add1 (Int x Int y ) = 
+> Declaration  : Int z = x + y  
+> Return z + 1  
+> Constante  : z = 3
+> Declaration  : Int x = call add1(z + 2  4 + 6  ) 
+> AST : 
+> Int add1 (Int x Int y ) = 
+> Declaration  : Int z = x + y  
+> Return z + 1  
+> Constante  : z = 3
+> Declaration  : Int x = call add1(z + 2  call add1(8 5 ) ) 
+> AST : 
+> Int add1 (Int x Int y ) = 
+> Declaration  : Int z = x + y  
+> Return z + 1  
+> Declaration  : Int x = call add1(2 true ) 
+> AST : 
+> Int add1 (Int x Int y ) = 
+> Declaration  : Int z = x + y  
+> Return z + 1  
+> Declaration  : Int x = call add1(true 2 ) 
+> AST : 
+> Int add1 (Int x Int y ) = 
+> Declaration  : Int z = x + y  
+> Return z + 1  
+> Declaration  : Int x = call add1([4 /3 ] 2 ) 
+> AST : 
+> Int add1 (Int x Int y ) = 
+> Declaration  : Int z = x + y  
+> Return z + 1  
+> Declaration  : Bool z = true 
+> Declaration  : Int x = call add1(4 z ) 
+> AST : 
+> Int add1 (Int x Int y ) = 
+> Declaration  : Int z = x + y  
+> Return z + 1  
+> Declaration  : Int x = call add1(4 5 6 ) 
+> AST : 
+> Int add1 (Int x Int y ) = 
+> Declaration  : Int z = x + y  
+> Return z + 1  
+> Declaration  : Int x = call add1(4 ) 
+> AST : 
+> Int add1 (Int x Int y ) = 
+> Declaration  : Int z = x + y  
+> Return z + 1  
+> Declaration  : Bool x = call add1(4 5 ) 
+> AST : 
+> Int add1 (Int x Int y ) = 
+> Declaration  : Int z = x + y  
+> Return z + 1  
+> Declaration  : Rat x = call add1(4 5 ) 
+> AST : 
+> Int add (Int x Int y ) = 
+> Return x + y  
+> Declaration  : Int x = 4 
+> AST : 
+> Int add (Int x Int y ) = 
+> Return true 
+> Declaration  : Int x = 4 
+> AST : 
+> Declaration  : Rat x = [3 /4 ] 
+> AST : 
+> Constante  : a = 3
+> Declaration  : Int b = 4 
+> Declaration  : Rat x = [a /b ] 
+> AST : 
+> Declaration  : Rat x = [3 /[4 /5 ] ] 
+> AST : 
+> Declaration  : Rat x = [true /5 ] 
+> AST : 
+> Declaration  : Int x = [4 /5 ] 
+> AST : 
+> Declaration  : Int x = num [3 /4 ]  
+> AST : 
+> Declaration  : Rat z = [3 /4 ] 
+> Declaration  : Int x = num z  
+> AST : 
+> Declaration  : Int x = num true  
+> AST : 
+> Declaration  : Int x = num 4  
+> AST : 
+> Declaration  : Bool x = num [3 /4 ]  
+> AST : 
+> Declaration  : Int x = denom [3 /4 ]  
+> AST : 
+> Declaration  : Rat z = [3 /4 ] 
+> Declaration  : Int x = denom z  
+> AST : 
+> Declaration  : Int x = denom true  
+> AST : 
+> Declaration  : Int x = denom 4  
+> AST : 
+> Declaration  : Bool x = num [3 /4 ]  
+> AST : 
+> Declaration  : Int x = 3 
+> Declaration  : Int y = x 
+> AST : 
+> Declaration  : Bool x = true 
+> Declaration  : Bool y = x 
+> AST : 
+> Declaration  : Rat x = [3 /4 ] 
+> Declaration  : Rat y = x 
+> AST : 
+> Declaration  : Rat x = [3 /4 ] 
+> Declaration  : Int y = x 
+> AST : 
+> Declaration  : Rat x = [3 /4 ] 
+> Declaration  : Bool y = x 
+> AST : 
+> Declaration  : Int x = 3 
+> Declaration  : Bool y = x 
+> AST : 
+> Declaration  : Int x = 3 
+> Declaration  : Rat y = x 
+> AST : 
+> Declaration  : Bool x = true 
+> Declaration  : Rat y = x 
+> AST : 
+> Declaration  : Bool x = true 
+> Declaration  : Int y = x 
+> AST : 
+> Int fact (Int i Int n ) = 
+> Declaration  : Int res = 0 
+> Conditionnelle  : IF i = n  
+> THEN 
+> Affectation  : res = i 
+> ELSE 
+> Affectation  : res = i * call fact(i + 1  n )  
+>
+> Return res 
+> Declaration  : Int x = call fact(1 5 ) 
+> Affichage  : x 
+> AST : 
+> Declaration  : Int x = 3 + 4  
+> AST : 
+> Declaration  : Rat x = [1 /3 ] + [4 /5 ]  
+> AST : 
+> Declaration  : Bool x = true + false  
+> AST : 
+> Declaration  : Bool x = [1 /2 ] = [2 /4 ]  
+> AST : 
+> Declaration  : Bool x = true = false  
+> AST : 
+> Declaration  : Bool x = 3 = 4  
+> AST : 
+> Declaration  : Int x = 3 * 4  
+> AST : 
+> Declaration  : Rat x = [1 /3 ] * [4 /5 ]  
+> AST : 
+> Declaration  : Bool x = true * false  
+> AST : 
+> Declaration  : Bool x = [1 /2 ] < [2 /4 ]  
+> AST : 
+> Declaration  : Bool x = true < false  
+> AST : 
+> Declaration  : Bool x = 3 < 4  
+$ (cd _build/default && /usr/bin/diff -u testTam.ml testTam.ml.corrected)
+> --- testTam.ml	2019-01-11 15:32:56.889062649 +0100
+> +++ testTam.ml.corrected	2019-01-11 15:33:02.396240703 +0100
+> @@ -57,64 +57,172 @@
+>  
+>  let%expect_test "testprintint" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testprintint.rat";
+> -  [%expect{| 42 |}]
+> +  [%expect{|
+> +    AST :
+> +    Affichage  : 42
+> +    42 |}]
+>  
+>  let%expect_test "testprintbool" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testprintbool.rat";
+> -  [%expect{| true |}]
+> +  [%expect{|
+> +    AST :
+> +    Affichage  : true
+> +    true |}]
+>  
+>  let%expect_test "testprintrat" =
+>     runtam "../../fichiersRat/src-rat-tam-test/testprintrat.rat";
+> -   [%expect{| [4/5] |}]
+> +   [%expect{|
+> +     AST :
+> +     Affichage  : [4 /5 ]
+> +     [4/5] |}]
+>  
+>  let%expect_test "testaddint" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testaddint.rat";
+> -  [%expect{| 42 |}]
+> +  [%expect{|
+> +    AST :
+> +    Affichage  : 20 + 22
+> +    42 |}]
+>  
+>  let%expect_test "testaddrat" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testaddrat.rat";
+> -  [%expect{| [7/6] |}]
+> +  [%expect{|
+> +    AST :
+> +    Affichage  : [1 /2 ] + [2 /3 ]
+> +    [7/6] |}]
+>  
+>  let%expect_test "testmultint" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testmultint.rat";
+> -  [%expect{| 440 |}]
+> +  [%expect{|
+> +    AST :
+> +    Affichage  : 20 * 22
+> +    440 |}]
+>  
+>  let%expect_test "testmultrat" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testmultrat.rat";
+> -  [%expect{| [14/3] |}]
+> +  [%expect{|
+> +    AST :
+> +    Affichage  : [7 /2 ] * [4 /3 ]
+> +    [14/3] |}]
+>  
+>  let%expect_test "testnum" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testnum.rat";
+> -  [%expect{| 4 |}]
+> +  [%expect{|
+> +    AST :
+> +    Declaration  : Rat x = [4 /7 ]
+> +    Affichage  : num x
+> +    4 |}]
+>  
+>  let%expect_test "testdenom" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testdenom.rat";
+> -  [%expect{| 7 |}]
+> +  [%expect{|
+> +    AST :
+> +    Declaration  : Rat x = [4 /7 ]
+> +    Affichage  : denom x
+> +    7 |}]
+>  
+>  let%expect_test "testwhile1" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testwhile1.rat";
+> -  [%expect{| 19 |}]
+> +  [%expect{|
+> +    AST :
+> +    Declaration  : Int x = 1
+> +    Declaration  : Int y = 1
+> +    TantQue  : TQ y < 10
+> +    FAIRE
+> +    Affectation  : x = x + 2
+> +    Affectation  : y = y + 1
+> +
+> +    Affichage  : x
+> +    19 |}]
+>  
+>  let%expect_test "testif1" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testif1.rat";
+> -  [%expect{| 18 |}]
+> +  [%expect{|
+> +    AST :
+> +    Declaration  : Int x = 1
+> +    Declaration  : Int y = 1
+> +    Conditionnelle  : IF x = y
+> +    THEN
+> +    Affichage  : 18
+> +    ELSE
+> +    Affichage  : 21
+> +
+> +    18 |}]
+>  
+>  let%expect_test "testif2" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testif2.rat";
+> -  [%expect{| 21 |}]
+> +  [%expect{|
+> +    AST :
+> +    Declaration  : Int x = 1
+> +    Declaration  : Int y = 2
+> +    Conditionnelle  : IF x = y
+> +    THEN
+> +    Affichage  : 18
+> +    ELSE
+> +    Affichage  : 21
+> +
+> +    21 |}]
+>    
+>  let%expect_test "factiter" =
+>    runtam "../../fichiersRat/src-rat-tam-test/factiter.rat";
+> -  [%expect{| 120 |}]
+> +  [%expect{|
+> +    AST :
+> +    Constante  : n = 5
+> +    Declaration  : Int fact = 1
+> +    Declaration  : Int i = 1
+> +    TantQue  : TQ i < n + 1
+> +    FAIRE
+> +    Affectation  : fact = fact * i
+> +    Affectation  : i = i + 1
+> +
+> +    Affichage  : fact
+> +    120 |}]
+>  
+>  let%expect_test "factrec" =
+>    runtam "../../fichiersRat/src-rat-tam-test/factrec.rat";
+> -  [%expect{| 120 |}]
+> +  [%expect{|
+> +    AST :
+> +    Int fact (Int i Int n ) =
+> +    Declaration  : Int res = 0
+> +    Conditionnelle  : IF i = n
+> +    THEN
+> +    Affectation  : res = i
+> +    ELSE
+> +    Affectation  : res = i * call fact(i + 1  n )
+> +
+> +    Return res
+> +    Declaration  : Int x = call fact(1 5 )
+> +    Affichage  : x
+> +    120 |}]
+>  
+>  let%expect_test "factfuns" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testfuns.rat";
+> -  [%expect{| 28 |}]
+> +  [%expect{|
+> +    AST :
+> +    Rat f3 (Int a Int b Rat r ) =
+> +    Return [a + num r   /b + denom r   ]
+> +    Rat f2 (Bool b Rat x Rat y ) =
+> +    Declaration  : Int x1 = num x
+> +    Declaration  : Int x2 = denom x
+> +    Declaration  : Rat res = call f3(x1 x2 y )
+> +    Return res
+> +    Int f1 (Int i Rat r Int n ) =
+> +    Declaration  : Rat sr = call f2(true r [i /n ] )
+> +    Return denom sr
+> +    Declaration  : Int x = call f1(13 [4 /11 ] 17 )
+> +    Affichage  : x
+> +    28 |}]
+>  
+>  let%expect_test "complique" =
+>    runtam "../../fichiersRat/src-rat-tam-test/complique.rat";
+> -  [%expect{| [9/4][27/14][27/16][3/2] |}]
+> \ No newline at end of file
+> +  [%expect{|
+> +    AST :
+> +    Constante  : a = 5
+> +    Declaration  : Rat x = [6 /a ]
+> +    Declaration  : Int y = a + 1
+> +    Affectation  : x = x + [3 /2 ]
+> +    TantQue  : TQ y < 10
+> +    FAIRE
+> +    Affichage  : [a /y ] * x
+> +    Affectation  : y = y + 1
+> +
+> +    [9/4][27/14][27/16][3/2] |}]
+> \ No newline at end of file
+[1]

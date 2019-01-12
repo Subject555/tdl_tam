@@ -1,0 +1,33 @@
+Compilation et construction de runtam.jar
+-----------------------------------------
+ant jar
+
+and that's all! Stop reading.
+
+(compile, construit runtam_part.jar avec le contenu de bin, et fusionne avec eggc.jar pour obtenir runtam.jar)
+
+Nettoyage
+---------
+ant clean
+
+(supprime bin et runtam_part.jar. Ne supprime pas runtam.jar)
+
+Compilation à la main
+---------------------
+Soit `ant compile`
+Soit depuis le répertoire runtam/src:
+
+mkdir ../bin
+javac -d ../bin -cp ../bin:../eggc.jar itam/aspartam/*/*.java 
+cp -r ./itam/aspartam/properties ../bin/itam/aspartam/
+javac -d ../bin -cp ../bin itam/tam/*.java
+cp itam/tam/messages.properties ../bin/itam/tam/
+javac -d ../bin -cp ../bin:../eggc.jar itam/Assembler.java 
+javac -d ../bin -cp ../bin runtam/Run.java
+
+
+Exécution
+---------
+
+export TAMDIR=/home/queinnec/Cours/pf-compil-2SN/TDL-SN/tools/runtam
+java -cp ${TAMDIR}/runtam.jar runtam.Run examples/essai.tam
