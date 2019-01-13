@@ -12,24 +12,6 @@ struct
   type t1 = Ast.AstType.programme
   type t2 = Ast.AstPlacement.programme
 
-  (* NE sert à rien *)
-  let rec analyser_placement_expression e =
-    match e with
-      | AstType.Rationnel(e1,e2) -> (Rationnel(e1,e2),0)
-      | AstType.Numerateur(e1) -> (Numerateur(e1),0)
-      | AstType.Denominateur(e1) -> (Denominateur(e1),0)
-      | AstType.Ident(info) -> (Ident(info),0)
-      | AstType.True -> (True,0)
-      | AstType.False -> (False,0)
-      | AstType.Entier(i) -> (Entier(i),0)
-      | AstType.Binaire(b,e1,e2) -> 
-        let ne1,t1 = analyser_placement_expression e1
-        in let ne2,t2 = analyser_placement_expression e2
-        in (Binaire(b,ne1,ne2),0)
-      | AstType.AppelFonction(s,le,info) -> 
-        let nle_t = List.map (analyser_placement_expression) le
-        in let nle = List.map (function x,y -> x) nle_t
-        in (AppelFonction(s,nle,info),0)
 
 
   let rec analyser_placement_instruction i dep reg =  
@@ -39,7 +21,7 @@ struct
         | InfoVar(typ,_,_) -> modifier_adresse_info dep reg info; (Declaration(e,info),getTaille typ)
         | _ -> failwith "")
   
-      | AstType.Affectation (e,info) -> Affectation(e,info),0
+      | AstType.Affectation (a,e) -> Affectation(a,e),0
       | AstType.Conditionnelle(c,b1,b2) -> 
         let nb1 = analyser_placement_bloc b1 dep reg in
         let nb2 = analyser_placement_bloc b2 dep reg in (Conditionnelle(c,nb1,nb2),0)

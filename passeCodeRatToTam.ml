@@ -56,7 +56,7 @@ struct
         | _ -> failwith("Fail Adresse")
       )
       | AstType.Valeur(aff) -> let _,s = analyser_affectable(aff) in s
-      | AstType.Allocation(t) ->  "LOADL"^(string_of_int(getTaille t))^"\n"^"SUBR MAlloc\n"
+      | AstType.Allocation(t) ->  "LOADL "^(string_of_int(getTaille t))^"\n"^"SUBR MAlloc\n"
       | AstType.Binaire(b,e1,e2) ->
         let val1 = analyser_expression e1 
         in let val2 = analyser_expression e2 in
@@ -72,7 +72,7 @@ struct
         
       | AstType.AppelFonction(n,le,info) -> 
           let fle = List.fold_left (fun t e -> t^(analyser_expression e)) "" le in
-          fle^"CALL (SB) "^n^"\n"
+          fle^"CALL (ST) "^n^"\n"
 
   let rec analyse_instruction i pop = 
     match i with
@@ -103,16 +103,18 @@ struct
         "SUBR BOut\n",pop
     | AstType.Conditionnelle(e,b1,b2) -> 
       let anal_e = analyser_expression e in
-      let anal_b1,_ = analyse_bloc b1 in
-      let anal_b2,_ = analyse_bloc b2 in
+      let anal_b1,pop_taille_if = analyse_bloc b1 in
+      let anal_b2,pop_taille_else = analyse_bloc b2 in
       let etiq_else = getEtiquette () in
       let etiq_fin_if = getEtiquette () in
         anal_e^
         "JUMPIF (0) "^etiq_else^
         "\n"^anal_b1^
+        "POP (0)"^(string_of_int pop_taille_if)^"\n"^
         "JUMP "^etiq_fin_if^
         "\nLABEL "^etiq_else^
         "\n"^anal_b2^
+        "POP (0)"^(string_of_int pop_taille_else)^"\n"^
         "LABEL "^etiq_fin_if^"\n",pop
     | AstType.TantQue(e,b) -> 
       let anal_e = analyser_expression e in
@@ -123,13 +125,14 @@ struct
         "\n"^anal_e^
         "JUMPIF (0) "^etiq2^
         "\n"^anal_b^
+        "POP (0)"^(string_of_int pop_taille_tq)^"\n"^
         "JUMP "^etiq^
         "\nLABEL "^etiq2^"\n",pop
     | AstType.Empty -> "",pop
 
   and analyse_bloc li = 
     let code, taille = List.fold_left (fun (code,pop_s) t -> let anal,i_s = analyse_instruction t pop_s in (code^anal,i_s)) ("",0) li
-    in code^"POP (0) "^(string_of_int taille)^"\n",taille
+    in code,taille
 
 
   let analyse_fonction (Ast.AstPlacement.Fonction(n,li,e,info_a)) = 
@@ -153,12 +156,13 @@ struct
           [] -> ""
         | t::q -> t^"\n"^(aux q)
     in let prog_f = aux ltf
-    in let prog_b,_ = analyse_bloc prog in
+    in let prog_b,blc_p = analyse_bloc prog in
       prog_i^
       prog_f^
       "LABEL main\n"
       ^prog_b^
-      "\nHALT"
+      "POP (0)"^(string_of_int blc_p)^
+      "\n\nHALT"
 
     
 

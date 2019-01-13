@@ -72,7 +72,7 @@ struct
   let analyser a = ()
 
 end
-
+(*
 (* Passe AstPlacement.programme -> string *)
 (* Affiche les adresses des variables  *)
 (* Pour tester les paramètres des fonctions, il est nécessaire de les mettre en retour *)
@@ -119,7 +119,7 @@ struct
     (String.concat "" (List.map (analyser_fonction) fonctions))^(String.concat "" (List.map (analyser_instruction) prog))
 
 end
-
+*)
 (* Passe AstPlacement.programme -> string *)
 (* Ne fait rien *)
 (* Nécessaire aux compilateurs intermédiaires (non complets) *)
