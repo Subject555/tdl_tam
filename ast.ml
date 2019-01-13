@@ -245,6 +245,10 @@ struct
 (* Opérateurs binaires existants dans Rat - résolution de la surcharge *)
 type binaire = PlusInt | PlusRat | MultInt | MultRat | EquInt | EquBool | Inf
 
+type affectable = 
+  | Variable of Tds.info_ast (* le nom de l'identifiant est remplacé par ses informations *)
+  | Deref of affectable
+
 (* Expressions existantes dans Rat *)
 (* = expression de AstTds *)
 type expression =
@@ -252,10 +256,13 @@ type expression =
   | Rationnel of expression * expression
   | Numerateur of expression
   | Denominateur of expression
-  | Ident of Tds.info_ast
   | True
   | False
   | Entier of int
+  | Valeur of affectable
+  | Null 
+  | Allocation of typ
+  | Adresse of Tds.info_ast
   | Binaire of binaire * expression * expression
 
 (* instructions existantes Rat *)
@@ -264,7 +271,7 @@ type expression =
 type bloc = instruction list
  and instruction =
   | Declaration of expression * Tds.info_ast
-  | Affectation of expression * Tds.info_ast
+  | Affectation of  affectable * expression 
   | AffichageInt of expression
   | AffichageRat of expression
   | AffichageBool of expression
@@ -285,6 +292,12 @@ end
 (***********************************)
 module AstPlacement =
 struct
+
+
+(* Affectables existants dans notre langage *)
+(* = affectable de AstType  *)
+type affectable = AstType.affectable 
+
 
 (* Expressions existantes dans notre langage *)
 (* = expression de AstType  *)

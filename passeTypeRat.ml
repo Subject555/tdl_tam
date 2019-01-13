@@ -1,3 +1,4 @@
+
 (* Module de la passe de gestion des types *)
 module PasseTypeRat : Passe.Passe with type t1 = Ast.AstTds.programme and type t2 = Ast.AstType.programme =
 struct
@@ -10,6 +11,21 @@ struct
 
   type t1 = Ast.AstTds.programme
   type t2 = Ast.AstType.programme
+
+  let rec analyse_type_affectable a=
+    match a with
+     | AstTds.Variable(info_ast) ->
+      let info = info_ast_to_info info_ast in
+      
+      (match info with
+      InfoConst(_) -> modifier_type_info Int info_ast; (Int,Variable(info_ast))
+      | InfoVar(t1,_,_) -> modifier_type_info t1 info_ast; (t1,Variable(info_ast))
+      | InfoFun(t1,_) -> modifier_type_info t1 info_ast; (t1,Variable(info_ast))
+      )
+      | AstTds.Deref(aff) -> let t1,v1 = analyse_type_affectable aff in 
+                            (match t1 with
+                             |Pt t2-> (t2,Deref(v1))
+                             |_-> raise(PasUnPointeur))
 
   let rec analyse_type_expression e = 
     match e with
@@ -35,17 +51,28 @@ struct
         (Int,Denominateur(v1))
       else 
         raise(TypeInattendu(t1,Rat))
-    | AstTds.Ident(info_ast) ->
-      let info = info_ast_to_info info_ast in
-      begin
-      match info with
-      InfoConst(_) -> modifier_type_info Int info_ast; (Int,Ident(info_ast))
-      | InfoVar(t1,_,_) -> modifier_type_info t1 info_ast; (t1,Ident(info_ast))
-      | InfoFun(t1,_) -> modifier_type_info t1 info_ast; (t1,Ident(info_ast))
-      end
     | AstTds.True -> (Bool,True)
     | AstTds.False -> (Bool,False)
     | AstTds.Entier(i) -> (Int,Entier(i))
+    | AstTds.Null -> (Undefined,Null)
+    | AstTds.Allocation(t) ->   
+    (match t with
+      |Int -> (Pt Int,Allocation Int)
+      |Rat -> (Pt Rat,Allocation Rat)
+      |Bool ->(Pt Rat,Allocation Bool)
+      |Pt (tp) -> (Pt (Pt tp),Allocation (Pt tp))
+      |Undefined -> failwith "Allocation type Undefined"    
+   )
+    
+    | AstTds.Adresse(info_ast) -> let info = info_ast_to_info info_ast in
+      
+      (match info with
+        InfoConst(_) -> modifier_type_info Int info_ast; (Int,Adresse(info_ast))
+        | InfoVar(t1,_,_) -> modifier_type_info t1 info_ast; (t1,Adresse(info_ast))
+        | InfoFun(t1,_) -> modifier_type_info t1 info_ast; (t1,Adresse(info_ast))
+    )
+    | AstTds.Valeur(aff) -> let t1,v1= analyse_type_affectable(aff) in 
+                              (t1,Valeur(v1)) 
     | AstTds.Binaire(b,e1,e2) -> 
       let (t1,v1) = analyse_type_expression e1 in
       let (t2,v2) = analyse_type_expression e2 in
@@ -116,20 +143,14 @@ let rec analyse_type_instruction i =
       Declaration(v1,info_ast)
     else
       raise(TypeInattendu(t1,t))
-  | AstTds.Affectation(e1, info_ast) ->
-    let t1,v1 = analyse_type_expression e1 in 
-    let info = info_ast_to_info info_ast in
-    begin
-    match info with
-    | InfoVar(t,_,_) -> 
-      if (est_compatible t1 t) then
-        Affectation(v1,info_ast)
+  | AstTds.Affectation(a, e1) ->
+    let t1,v1 = analyse_type_affectable a in 
+    let t2,v2 = analyse_type_expression e1 in 
+      if (est_compatible t1 t2) then
+        Affectation(v1,v2)
       else
-        raise(TypeInattendu(t1,t))
-    | _ -> failwith ""
-    end
+        raise(TypeInattendu(t2,t1))
     
-
   | AstTds.Affichage(e1) ->
     let t1,v1 = analyse_type_expression e1 in 
     begin
