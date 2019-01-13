@@ -103,6 +103,8 @@ and instruction =
   | Conditionnelle of expression * bloc * bloc
   (*Boucle TantQue représentée par la conditin d'arrêt de la boucle et le bloc d'instructions *)
   | TantQue of expression * bloc
+  (*Boucle Pour*)
+  | Pour of typ * string * expression * expression * string  * expression * bloc
 
 (* Structure des fonctions de Rat *)
 (* type de retour - nom - liste des paramètres (association type et nom) - corps de la fonction - valeur de retour *)
@@ -165,6 +167,8 @@ struct
                                   "ELSE \n"^((List.fold_right (fun i tq -> (string_of_instruction i)^tq) e ""))^"\n"
     | TantQue (c,b) -> "TantQue  : TQ "^(string_of_expression c)^"\n"^
                                   "FAIRE \n"^((List.fold_right (fun i tq -> (string_of_instruction i)^tq) b ""))^"\n"
+    | Pour (t,n1,e1,e2,n2,e3,li) -> "Pour : FOR ("^(string_of_type t)^" "^n1^"="^(string_of_expression e1)^" ; "^(string_of_expression e2)^" ; "^n2^"="^(string_of_expression e3)^")\n"^
+                                  ((List.fold_right (fun i tq -> (string_of_instruction i)^tq) li ""))^"\n"
 
   (* Conversion des fonctions *)
   let string_of_fonction (Fonction(t,n,lp,li,e)) = (string_of_type t)^" "^n^" ("^((List.fold_right (fun (t,n) tq -> (string_of_type t)^" "^n^" "^tq) lp ""))^") = \n"^
@@ -222,6 +226,7 @@ struct
     | Affichage of expression
     | Conditionnelle of expression * bloc * bloc
     | TantQue of expression * bloc
+    | Pour of typ * expression * expression * expression * bloc * Tds.info_ast
     | Empty (* les nœuds ayant disparus: Const *)
 
 
@@ -245,6 +250,10 @@ struct
 (* Opérateurs binaires existants dans Rat - résolution de la surcharge *)
 type binaire = PlusInt | PlusRat | MultInt | MultRat | EquInt | EquBool | Inf
 
+type affectable = 
+  | Variable of Tds.info_ast (* le nom de l'identifiant est remplacé par ses informations *)
+  | Deref of affectable
+
 (* Expressions existantes dans Rat *)
 (* = expression de AstTds *)
 type expression =
@@ -252,10 +261,13 @@ type expression =
   | Rationnel of expression * expression
   | Numerateur of expression
   | Denominateur of expression
-  | Ident of Tds.info_ast
   | True
   | False
   | Entier of int
+  | Valeur of affectable
+  | Null 
+  | Allocation of typ
+  | Adresse of Tds.info_ast
   | Binaire of binaire * expression * expression
 
 (* instructions existantes Rat *)
@@ -264,12 +276,13 @@ type expression =
 type bloc = instruction list
  and instruction =
   | Declaration of expression * Tds.info_ast
-  | Affectation of expression * Tds.info_ast
+  | Affectation of  affectable * expression 
   | AffichageInt of expression
   | AffichageRat of expression
   | AffichageBool of expression
   | Conditionnelle of expression * bloc * bloc
   | TantQue of expression * bloc
+  | Pour of expression * expression * expression * bloc * Tds.info_ast
   | Empty (* les nœuds ayant disparus: Const *)
 
 (* nom, liste des paramètres, corps, expression de retour, informations associées à l'identificateur *)

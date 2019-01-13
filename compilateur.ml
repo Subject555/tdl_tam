@@ -44,11 +44,11 @@ module CompilateurRat = Compilateur (PasseTdsRat) (PasseTypeNop) (PasseNop) (Pas
 *)
 
 (* + passe de typage *)
-(*
+
 open PasseTdsRat
 open PasseTypeRat
 module CompilateurRat = Compilateur (PasseTdsRat) (PasseTypeRat) (PassePlacementNop) (PasseCodeNopNop)
-*)
+
 
 (* + passe de placement mémoire *)
 (*
@@ -69,14 +69,14 @@ module AfficherDep = Compilateur (PasseTdsRat) (PasseTypeRat) (PassePlacementRat
 *)
 
 (* + passe de génération de code -> compilateur complet *)
-
+(*
 open PasseTdsRat
 open PasseTypeRat
 open PassePlacementRat
 open PasseCodeRatToTam
 module CompilateurRat = Compilateur (PasseTdsRat) (PasseTypeRat) (PassePlacementRat) (PasseCodeRatToTam)
 
-
+*)
 
 open Lexing
 

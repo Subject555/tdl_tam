@@ -24,6 +24,7 @@ open Ast.AstSyntax
 %token BOOL
 %token INT
 %token RAT
+%token POINTEUR
 %token CALL 
 %token CO
 %token CF
@@ -35,7 +36,11 @@ open Ast.AstSyntax
 %token PLUS
 %token MULT
 %token INF
+%token ADR
+%token NULL
+%token NEW
 %token EOF
+%token FOR
 
 (* Type de l'attribut synthétisé des non-terminaux *)
 %type <programme> prog
@@ -47,6 +52,7 @@ open Ast.AstSyntax
 %type <(typ*string) list> dp
 %type <expression> e 
 %type <expression list> cp
+%type <affectable> aff
 
 (* Type et définition de l'axiome *)
 %start <Ast.AstSyntax.programme> main
@@ -69,11 +75,16 @@ is :
 
 i :
 | t=typ n=ID EQUAL e1=e PV          {Declaration (t,n,e1)}
-| n=ID EQUAL e1=e PV                {Affectation (n,e1)}
+| a=aff EQUAL e1=e PV               {Affectation (a,e1)}
 | CONST n=ID EQUAL e=ENTIER PV      {Constante (n,e)}
 | PRINT e1=e PV                     {Affichage (e1)}
 | IF exp=e li1=bloc ELSE li2=bloc   {Conditionnelle (exp,li1,li2)}
 | WHILE exp=e li=bloc               {TantQue (exp,li)}
+| FOR PO t=typ n1=ID EQUAL e1=e PV e2=e PV n2=ID EQUAL e3=e PF li=bloc {Pour (t,n1,e1,e2,n2,e3,li)}
+
+aff :
+| n=ID                    {Variable n}
+| PO MULT a=aff PF              {Deref a}           
 
 dp :
 |                         {[]}
@@ -83,16 +94,20 @@ typ :
 | BOOL    {Bool}
 | INT     {Int}
 | RAT     {Rat}
+| t=typ MULT  {Pt t}
 
 e : 
 | CALL n=ID PO lp=cp PF   {AppelFonction (n,lp)}
 | CO e1=e SLASH e2=e CF   {Rationnel(e1,e2)}
 | NUM e1=e                {Numerateur e1}
 | DENOM e1=e              {Denominateur e1}
-| n=ID                    {Ident n}
 | TRUE                    {True}
 | FALSE                   {False}
 | e=ENTIER                {Entier e}
+| NULL                    {Null}
+| a=aff              {Valeur(a)}
+| PO NEW t=typ PF              {Allocation(t)}
+| ADR n=ID                {Adresse(n)}
 | PO e1=e PLUS e2=e PF    {Binaire (Plus,e1,e2)}
 | PO e1=e MULT e2=e PF    {Binaire (Mult,e1,e2)}
 | PO e1=e EQUAL e2=e PF   {Binaire (Equ,e1,e2)}

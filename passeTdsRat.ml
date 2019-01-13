@@ -176,6 +176,32 @@ let rec analyse_tds_instruction tds i =
       let bast = analyse_tds_bloc tds b in
       (* Renvoie la nouvelle structure de la boucle *)
       TantQue (nc, bast)
+  | AstSyntax.Pour (t1,n1,e1,e2,n3,e3,li) ->
+      if ((compare n1 n3) == 0) then
+        let n_tds = creerTDSFille tds in
+        (match chercherLocalement n_tds n1 with
+        | None ->
+            (* L'identifiant n'est pas trouvé dans la tds locale, 
+            il n'a donc pas été déclaré dans le bloc courant *)
+            (* Vérification de la bonne utilisation des identifiants dans l'expression *)
+            (* et obtention de l'expression transformée *) 
+            let ne1 = analyse_tds_expression n_tds e1 in
+            (* Création de l'information associée à l'identfiant *)
+            let info = InfoVar (Undefined, 0, "") in
+            (* Création du pointeur sur l'information *)
+            let ia = info_to_info_ast info in
+            (* Ajout de l'information (pointeur) dans la tds *)
+            ajouter n_tds n1 ia;
+            let ne2 = analyse_tds_expression n_tds e2 in
+            let ne3 = analyse_tds_expression n_tds e3 in
+            let nb = List.map (analyse_tds_instruction n_tds) li in
+            Pour(t1,ne1,ne2,ne3,nb,ia)
+        | Some _ ->
+            (* L'identifiant est trouvé dans la tds locale, 
+            il a donc déjà été déclaré dans le bloc courant *) 
+            raise (DoubleDeclaration n1))
+      else
+        failwith ""
 
       
 (* analyse_tds_bloc : AstSyntax.bloc -> Asttds.bloc *)

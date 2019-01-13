@@ -1,11 +1,13 @@
-type typ = Bool | Int | Rat | Undefined
+type typ = Bool | Int | Rat | Undefined| Pt of typ
 
-let string_of_type t = 
+let rec string_of_type t = 
   match t with
   | Bool ->  "Bool"
   | Int  ->  "Int"
   | Rat  ->  "Rat"
   | Undefined -> "Undefined"
+  | Pt t-> "Pointeur vers "^(string_of_type t)
+
 
 
 let est_compatible t1 t2 =
@@ -26,4 +28,6 @@ let getTaille t =
   | Bool -> 1
   | Rat -> 2
   | Undefined -> 0
+  | Pt t -> 1
+ 
   

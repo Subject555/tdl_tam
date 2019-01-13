@@ -22,6 +22,7 @@ rule token = parse
 | "const"   {CONST}
 | "print"   {PRINT}
 | "if"      {IF}
+| "for"     {FOR}
 | "else"    {ELSE}
 | "while"   {WHILE}
 | "bool"    {BOOL}

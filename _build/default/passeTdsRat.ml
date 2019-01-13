@@ -1,3 +1,4 @@
+
 (* Module de la passe de gestion des identifiants *)
 module PasseTdsRat : Passe.Passe with type t1 = Ast.AstSyntax.programme and type t2 = Ast.AstTds.programme =
 struct
@@ -9,6 +10,35 @@ struct
 
   type t1 = Ast.AstSyntax.programme
   type t2 = Ast.AstTds.programme
+
+let rec analyse_tds_affectable tds a modif =
+  match a with
+    |AstSyntax.Variable(nom) ->
+      (match chercherGlobalement tds nom with
+      | None ->
+        (* L'identifiant n'est pas trouvé dans la tds globale, 
+            il n'a donc pas été déclaré*)
+        raise (IdentifiantNonDeclare nom)
+      | Some info -> 
+        (* L'identifiant est trouvé dans la tds globale, 
+            il a donc déjà été déclaré*) 
+          (
+            let info_nast = info_ast_to_info info in
+            match info_nast with
+            | Tds.InfoVar(_,_,_) -> 
+              Variable(info)
+            | Tds.InfoConst(_) ->
+              if modif then
+                raise(MauvaiseUtilisationIdentifiant nom)
+              else
+                Variable(info)
+            | _ -> 
+              raise(MauvaiseUtilisationIdentifiant nom)
+          )
+       )
+    |AstSyntax.Deref(aff) -> 
+      let res = analyse_tds_affectable tds aff modif in
+      Deref(res)
 
 
 (* analyse_tds_expression : AstSyntax.ast -> Asttds.expression *)
@@ -50,31 +80,22 @@ let rec analyse_tds_expression tds e =
   | AstSyntax.Denominateur (e1) -> 
     let ne1 = analyse_tds_expression tds e1 in
     Denominateur(ne1)
-  | AstSyntax.Ident (nom) ->
-    begin
-      match chercherGlobalement tds nom with
-      | None ->
-        (* L'identifiant n'est pas trouvé dans la tds globale, 
-            il n'a donc pas été déclaré*)
-        raise (IdentifiantNonDeclare nom)
-      | Some info -> 
-        (* L'identifiant est trouvé dans la tds globale, 
-            il a donc déjà été déclaré*) 
-          begin
-            let info_nast = info_ast_to_info info in
-            match info_nast with
-            | Tds.InfoVar(_,_,_) -> 
-              Ident(info)
-            | Tds.InfoConst(_) ->
-              Ident(info)
-            | _ -> 
-              raise(MauvaiseUtilisationIdentifiant nom)
-          end
-          
-    end
   | AstSyntax.True -> True
   | AstSyntax.False -> False
   | AstSyntax.Entier (i) -> Entier(i)
+  | AstSyntax.Null -> Null
+  | AstSyntax.Adresse(n)->
+    (match chercherGlobalement tds n with
+    | None ->
+      (* L'identifiant n'est pas trouvé dans la tds globale, 
+          il n'a donc pas été déclaré *)
+      raise (IdentifiantNonDeclare n)
+    | Some info -> 
+      (* L'identifiant est trouvé dans la tds globale, 
+          il a donc déjà été déclaré *) 
+      Adresse(info))
+  | AstSyntax.Allocation(t)-> Allocation(t)
+  | AstSyntax.Valeur(aff) -> Valeur(analyse_tds_affectable tds aff false)
   | AstSyntax.Binaire (b,e1,e2) ->  
     let ne1 = analyse_tds_expression tds e1 in
     let ne2 = analyse_tds_expression tds e2 in
@@ -114,29 +135,10 @@ let rec analyse_tds_instruction tds i =
             il a donc déjà été déclaré dans le bloc courant *) 
             raise (DoubleDeclaration n)
       end
-  | AstSyntax.Affectation (n,e) ->
-      begin
-        match chercherGlobalement tds n with
-        | None -> 
-          (* L'identifiant n'est pas trouvé dans la tds globale. *) 
-          raise (IdentifiantNonDeclare n)
-        | Some info -> 
-          (* L'identifiant est trouvé dans la tds globale, 
-          il a donc déjà été déclaré. L'information associée est récupérée. *) 
-          begin
-            match info_ast_to_info info with
-            | InfoVar _ -> 
-              (* Vérification de la bonne utilisation des identifiants dans l'expression *)
-              (* et obtention de l'expression transformée *) 
-              let ne = analyse_tds_expression tds e in
-              (* Renvoie de la nouvelle affectation où le nom a été remplacé par l'information 
-              et l'expression remplacée par l'expression issue de l'analyse *)
-               Affectation (ne, info)
-            |  _ ->
-              (* Modification d'une constante ou d'une fonction *)  
-              raise (MauvaiseUtilisationIdentifiant n) 
-          end
-      end
+  | AstSyntax.Affectation (aff,e) ->
+      let res_a = analyse_tds_affectable tds aff true in
+      let res_e = analyse_tds_expression tds e in
+      Affectation(res_a,res_e)
   | AstSyntax.Constante (n,v) -> 
       begin
         match chercherLocalement tds n with
@@ -174,6 +176,32 @@ let rec analyse_tds_instruction tds i =
       let bast = analyse_tds_bloc tds b in
       (* Renvoie la nouvelle structure de la boucle *)
       TantQue (nc, bast)
+  | AstSyntax.Pour (t1,n1,e1,e2,n3,e3,li) ->
+      if ((compare n1 n3) == 0) then
+        let n_tds = creerTDSFille tds in
+        (match chercherLocalement n_tds n1 with
+        | None ->
+            (* L'identifiant n'est pas trouvé dans la tds locale, 
+            il n'a donc pas été déclaré dans le bloc courant *)
+            (* Vérification de la bonne utilisation des identifiants dans l'expression *)
+            (* et obtention de l'expression transformée *) 
+            let ne1 = analyse_tds_expression n_tds e1 in
+            (* Création de l'information associée à l'identfiant *)
+            let info = InfoVar (Undefined, 0, "") in
+            (* Création du pointeur sur l'information *)
+            let ia = info_to_info_ast info in
+            (* Ajout de l'information (pointeur) dans la tds *)
+            ajouter n_tds n1 ia;
+            let ne2 = analyse_tds_expression n_tds e2 in
+            let ne3 = analyse_tds_expression n_tds e3 in
+            let nb = List.map (analyse_tds_instruction n_tds) li in
+            Pour(t1,ne1,ne2,ne3,nb,ia)
+        | Some _ ->
+            (* L'identifiant est trouvé dans la tds locale, 
+            il a donc déjà été déclaré dans le bloc courant *) 
+            raise (DoubleDeclaration n1))
+      else
+        failwith ""
 
       
 (* analyse_tds_bloc : AstSyntax.bloc -> Asttds.bloc *)
@@ -236,3 +264,4 @@ let analyser (AstSyntax.Programme (fonctions,prog)) =
     Programme(nf, analyse_tds_bloc maintds prog)
   
 end
+

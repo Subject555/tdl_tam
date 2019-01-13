@@ -22,6 +22,7 @@ rule token = parse
 | "const"   {CONST}
 | "print"   {PRINT}
 | "if"      {IF}
+| "for"     {FOR}
 | "else"    {ELSE}
 | "while"   {WHILE}
 | "bool"    {BOOL}
@@ -38,6 +39,9 @@ rule token = parse
 | "+"       {PLUS}
 | "*"       {MULT}
 | "<"       {INF}
+| "&"       {ADR}
+| "Null"    {NULL}
+| "new"     {NEW}
 | ['0'-'9']+ as i
     { ENTIER (int_of_string i) }
 | ['a'-'z'](['A'-'Z''a'-'z''0'-'9']|"-"|"_")* as n

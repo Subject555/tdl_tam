@@ -9,15 +9,19 @@ type token =
   | RAT
   | PV
   | PRINT
+  | POINTEUR
   | PO
   | PLUS
   | PF
   | NUM
+  | NULL
+  | NEW
   | MULT
   | INT
   | INF
   | IF
   | ID of (string)
+  | FOR
   | FALSE
   | EQUAL
   | EOF
@@ -31,6 +35,7 @@ type token =
   | BOOL
   | AO
   | AF
+  | ADR
 
 (* This exception is raised by the monolithic API functions. *)
 
