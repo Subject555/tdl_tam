@@ -10,11 +10,14 @@ let rec string_of_type t =
 
 
 
-let est_compatible t1 t2 =
+let rec est_compatible t1 t2 =
   match t1, t2 with
   | Bool, Bool -> true
   | Int, Int -> true
-  | Rat, Rat -> true 
+  | Rat, Rat -> true
+  | Pt t3, Pt t4 -> est_compatible t3 t4
+  | Pt t3, t4 -> est_compatible t3 t4
+  | t3, Pt t4 -> est_compatible t3 t4
   | _ -> false 
 
 let est_compatible_list lt1 lt2 =
