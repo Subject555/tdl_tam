@@ -130,6 +130,7 @@ struct
         (type_f,AppelFonction(nom,lv,info_ast))           
       | _ -> failwith ""
       end
+    | _ -> failwith ""
             
 
 
