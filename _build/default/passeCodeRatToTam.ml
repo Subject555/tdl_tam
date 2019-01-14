@@ -128,6 +128,31 @@ struct
         "POP (0)"^(string_of_int pop_taille_tq)^"\n"^
         "JUMP "^etiq^
         "\nLABEL "^etiq2^"\n",pop
+    | AstType.Pour(e1,e2,e3,li,info) ->
+      let ne1 = analyser_expression e1 in
+      let ne2 = analyser_expression e2 in
+      let ne3 = analyser_expression e3 in
+      let anal_b,pop_taille_pour = analyse_bloc li in
+      let etiq = getEtiquette() in
+      let etiq2 = getEtiquette() in
+      (match info_ast_to_info info with
+        InfoVar(t,dep,reg) ->
+          "PUSH "^(string_of_int (getTaille t))^"\n"^
+          ne1^
+          "STORE ("^(string_of_int (getTaille t))^") "^(string_of_int dep)^"["^reg^"]\n"^
+          "LABEL "^etiq^"\n"^
+          ne2^
+          "JUMPIF (0) "^etiq2^"\n"^
+          anal_b^   
+          "POP (0)"^(string_of_int pop_taille_pour)^"\n"^
+          ne3^
+          "STORE ("^(string_of_int (getTaille t))^") "^(string_of_int dep)^"["^reg^"]\n"^
+          "JUMP "^etiq^"\n"^
+          "LABEL "^etiq2^"\n"^
+          "POP (0)"^(string_of_int (getTaille t))^"\n"
+          ,pop
+        | _ -> failwith "Fail declaration"
+      )
     | AstType.Empty -> "",pop
 
   and analyse_bloc li = 

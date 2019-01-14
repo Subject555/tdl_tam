@@ -21,6 +21,7 @@ type token =
   | INF
   | IF
   | ID of (string)
+  | FOR
   | FALSE
   | EQUAL
   | EOF

@@ -127,3 +127,7 @@ let%expect_test "test_tam_fjsdd" =
   runtam "../../fichiersRat/testPt.rat";
   [%expect{| 3 |}]
 
+  
+let%expect_test "TestPour" = 
+  runtam "../../fichiersRat/testPour.rat";
+  [%expect{| 01234 |}]

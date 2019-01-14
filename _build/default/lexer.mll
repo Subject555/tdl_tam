@@ -22,6 +22,10 @@ rule token = parse
 | "const"   {CONST}
 | "print"   {PRINT}
 | "if"      {IF}
+<<<<<<< HEAD
+=======
+| "for"     {FOR}
+>>>>>>> boucle_for
 | "else"    {ELSE}
 | "while"   {WHILE}
 | "bool"    {BOOL}
