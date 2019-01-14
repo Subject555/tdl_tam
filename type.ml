@@ -1,4 +1,4 @@
-type typ = Bool | Int | Rat | Undefined| Pt of typ
+type typ = Bool | Int | Rat | Undefined| Pt of typ | TypeNom of string
 
 let rec string_of_type t = 
   match t with
@@ -7,6 +7,7 @@ let rec string_of_type t =
   | Rat  ->  "Rat"
   | Undefined -> "Undefined"
   | Pt t-> "Pointeur vers "^(string_of_type t)
+  | TypeNom n -> "TypeNommé "^n
 
 
 
@@ -32,5 +33,6 @@ let getTaille t =
   | Rat -> 2
   | Undefined -> 0
   | Pt t -> 1
+  | TypeNom n -> 0
  
   

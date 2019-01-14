@@ -41,6 +41,7 @@ open Ast.AstSyntax
 %token NEW
 %token EOF
 %token FOR
+%token TYPEN
 
 (* Type de l'attribut synthétisé des non-terminaux *)
 %type <programme> prog
@@ -81,7 +82,7 @@ i :
 | IF exp=e li1=bloc ELSE li2=bloc   {Conditionnelle (exp,li1,li2)}
 | WHILE exp=e li=bloc               {TantQue (exp,li)}
 | FOR PO t=typ n1=ID EQUAL e1=e PV e2=e PV n2=ID EQUAL e3=e PF li=bloc {Pour (t,n1,e1,e2,n2,e3,li)}
-
+| TYPEN n=ID EQUAL t=typ PV {DeclTypeNom(t,n)}
 
 aff :
 | n=ID                    {Variable n}
@@ -96,6 +97,7 @@ typ :
 | INT     {Int}
 | RAT     {Rat}
 | t=typ MULT  {Pt t}
+| n=ID {TypeNom n}
 
 e : 
 | CALL n=ID PO lp=cp PF   {AppelFonction (n,lp)}

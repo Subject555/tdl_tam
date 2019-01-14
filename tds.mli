@@ -10,6 +10,7 @@ type info =
   (* Information associée à une fonction : son type de retour et la liste
   des types des paramètres *)
   | InfoFun of typ * typ list
+  | InfoType of typ
 
 (* Table des symboles *)
 type tds 
