@@ -225,7 +225,7 @@ struct
     | Affectation of  affectable * expression  
     | Affichage of expression
     | Conditionnelle of expression * bloc * bloc
-    | TantQue of expression * bloc
+    | TantQue of expression * bloc 
     | Pour of typ * expression * expression * expression * bloc * Tds.info_ast
     | Empty (* les nœuds ayant disparus: Const *)
 
@@ -292,6 +292,7 @@ type fonction = Fonction of string * Tds.info_ast list * bloc * expression * Tds
 type programme = Programme of fonction list * bloc
 
 end
+
 (***********************************)
 (* AST après la phase de placement *)
 (***********************************)

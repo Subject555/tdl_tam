@@ -279,7 +279,7 @@ and _menhir_goto_cp : _menhir_env -> 'ttv_tail -> _menhir_state -> (
       (expression list)
 # 281 "parser.ml"
         ) = 
-# 118 "parser.mly"
+# 119 "parser.mly"
                 (e1::le)
 # 285 "parser.ml"
          in
@@ -337,7 +337,7 @@ and _menhir_goto_cp : _menhir_env -> 'ttv_tail -> _menhir_state -> (
       (expression)
 # 339 "parser.ml"
             ) = 
-# 100 "parser.mly"
+# 101 "parser.mly"
                           (AppelFonction (n,lp))
 # 343 "parser.ml"
              in
@@ -913,7 +913,7 @@ and _menhir_goto_dp : _menhir_env -> 'ttv_tail -> _menhir_state -> (
       ((typ*string) list)
 # 915 "parser.ml"
         ) = 
-# 91 "parser.mly"
+# 92 "parser.mly"
                           ((t,n)::lp)
 # 919 "parser.ml"
          in
@@ -1085,7 +1085,7 @@ and _menhir_goto_aff : _menhir_env -> 'ttv_tail -> _menhir_state -> (
       (expression)
 # 1087 "parser.ml"
         ) = 
-# 108 "parser.mly"
+# 109 "parser.mly"
                      (Valeur(a))
 # 1091 "parser.ml"
          in
@@ -1127,7 +1127,7 @@ and _menhir_goto_aff : _menhir_env -> 'ttv_tail -> _menhir_state -> (
       (affectable)
 # 1129 "parser.ml"
             ) = 
-# 87 "parser.mly"
+# 88 "parser.mly"
                                 (Deref a)
 # 1133 "parser.ml"
              in
@@ -1253,7 +1253,7 @@ and _menhir_reduce4 : _menhir_env -> 'ttv_tail -> _menhir_state -> 'ttv_return =
       (expression list)
 # 1255 "parser.ml"
     ) = 
-# 117 "parser.mly"
+# 118 "parser.mly"
                 ([])
 # 1259 "parser.ml"
      in
@@ -1559,7 +1559,7 @@ and _menhir_reduce6 : _menhir_env -> 'ttv_tail -> _menhir_state -> 'ttv_return =
       ((typ*string) list)
 # 1561 "parser.ml"
     ) = 
-# 90 "parser.mly"
+# 91 "parser.mly"
                           ([])
 # 1565 "parser.ml"
      in
@@ -1577,7 +1577,7 @@ and _menhir_run6 : _menhir_env -> 'ttv_tail -> _menhir_state -> 'ttv_return =
       (expression)
 # 1579 "parser.ml"
     ) = 
-# 104 "parser.mly"
+# 105 "parser.mly"
                           (True)
 # 1583 "parser.ml"
      in
@@ -1681,7 +1681,7 @@ and _menhir_run9 : _menhir_env -> 'ttv_tail -> _menhir_state -> 'ttv_return =
       (expression)
 # 1683 "parser.ml"
     ) = 
-# 107 "parser.mly"
+# 108 "parser.mly"
                           (Null)
 # 1687 "parser.ml"
      in
@@ -1711,7 +1711,7 @@ and _menhir_run10 : _menhir_env -> 'ttv_tail -> _menhir_state -> (
       (affectable)
 # 1713 "parser.ml"
     ) = 
-# 86 "parser.mly"
+# 87 "parser.mly"
                           (Variable n)
 # 1717 "parser.ml"
      in
@@ -1729,7 +1729,7 @@ and _menhir_run11 : _menhir_env -> 'ttv_tail -> _menhir_state -> 'ttv_return =
       (expression)
 # 1731 "parser.ml"
     ) = 
-# 105 "parser.mly"
+# 106 "parser.mly"
                           (False)
 # 1735 "parser.ml"
      in
@@ -1759,7 +1759,7 @@ and _menhir_run12 : _menhir_env -> 'ttv_tail -> _menhir_state -> (
       (expression)
 # 1761 "parser.ml"
     ) = 
-# 106 "parser.mly"
+# 107 "parser.mly"
                           (Entier e)
 # 1765 "parser.ml"
      in
@@ -1939,7 +1939,7 @@ and _menhir_run18 : _menhir_env -> 'ttv_tail -> _menhir_state -> 'ttv_return =
       (expression)
 # 1941 "parser.ml"
         ) = 
-# 110 "parser.mly"
+# 111 "parser.mly"
                           (Adresse(n))
 # 1945 "parser.ml"
          in
@@ -2108,7 +2108,7 @@ and _menhir_goto_e : _menhir_env -> 'ttv_tail -> _menhir_state -> (
       (expression)
 # 2110 "parser.ml"
             ) = 
-# 101 "parser.mly"
+# 102 "parser.mly"
                           (Rationnel(e1,e2))
 # 2114 "parser.ml"
              in
@@ -2152,7 +2152,7 @@ and _menhir_goto_e : _menhir_env -> 'ttv_tail -> _menhir_state -> (
       (expression)
 # 2154 "parser.ml"
         ) = 
-# 103 "parser.mly"
+# 104 "parser.mly"
                           (Denominateur e1)
 # 2158 "parser.ml"
          in
@@ -2181,7 +2181,7 @@ and _menhir_goto_e : _menhir_env -> 'ttv_tail -> _menhir_state -> (
       (expression)
 # 2183 "parser.ml"
         ) = 
-# 102 "parser.mly"
+# 103 "parser.mly"
                           (Numerateur e1)
 # 2187 "parser.ml"
          in
@@ -2404,7 +2404,7 @@ and _menhir_goto_e : _menhir_env -> 'ttv_tail -> _menhir_state -> (
       (expression)
 # 2406 "parser.ml"
             ) = 
-# 111 "parser.mly"
+# 112 "parser.mly"
                           (Binaire (Plus,e1,e2))
 # 2410 "parser.ml"
              in
@@ -2477,7 +2477,7 @@ and _menhir_goto_e : _menhir_env -> 'ttv_tail -> _menhir_state -> (
       (expression)
 # 2479 "parser.ml"
             ) = 
-# 112 "parser.mly"
+# 113 "parser.mly"
                           (Binaire (Mult,e1,e2))
 # 2483 "parser.ml"
              in
@@ -2550,7 +2550,7 @@ and _menhir_goto_e : _menhir_env -> 'ttv_tail -> _menhir_state -> (
       (expression)
 # 2552 "parser.ml"
             ) = 
-# 114 "parser.mly"
+# 115 "parser.mly"
                           (Binaire (Inf,e1,e2))
 # 2556 "parser.ml"
              in
@@ -2623,7 +2623,7 @@ and _menhir_goto_e : _menhir_env -> 'ttv_tail -> _menhir_state -> (
       (expression)
 # 2625 "parser.ml"
             ) = 
-# 113 "parser.mly"
+# 114 "parser.mly"
                           (Binaire (Equ,e1,e2))
 # 2629 "parser.ml"
              in
@@ -3511,7 +3511,7 @@ and _menhir_run35 : _menhir_env -> 'ttv_tail * _menhir_state * (
       (typ)
 # 3513 "parser.ml"
     ) = 
-# 97 "parser.mly"
+# 98 "parser.mly"
               (Pt t)
 # 3517 "parser.ml"
      in
@@ -3597,7 +3597,7 @@ and _menhir_goto_typ : _menhir_env -> 'ttv_tail -> _menhir_state -> (
       (expression)
 # 3599 "parser.ml"
             ) = 
-# 109 "parser.mly"
+# 110 "parser.mly"
                                (Allocation(t))
 # 3603 "parser.ml"
              in
@@ -4306,7 +4306,7 @@ and _menhir_run1 : _menhir_env -> 'ttv_tail -> _menhir_state -> 'ttv_return =
       (typ)
 # 4308 "parser.ml"
     ) = 
-# 96 "parser.mly"
+# 97 "parser.mly"
           (Rat)
 # 4312 "parser.ml"
      in
@@ -4324,7 +4324,7 @@ and _menhir_run2 : _menhir_env -> 'ttv_tail -> _menhir_state -> 'ttv_return =
       (typ)
 # 4326 "parser.ml"
     ) = 
-# 95 "parser.mly"
+# 96 "parser.mly"
           (Int)
 # 4330 "parser.ml"
      in
@@ -4359,7 +4359,7 @@ and _menhir_run32 : _menhir_env -> 'ttv_tail -> _menhir_state -> 'ttv_return =
       (typ)
 # 4361 "parser.ml"
     ) = 
-# 94 "parser.mly"
+# 95 "parser.mly"
           (Bool)
 # 4365 "parser.ml"
      in

@@ -202,7 +202,6 @@ let rec analyse_tds_instruction tds i =
             raise (DoubleDeclaration n1))
       else
         failwith ""
-
       
 (* analyse_tds_bloc : AstSyntax.bloc -> Asttds.bloc *)
 (* Paramètre tds : la table des symboles courante *)

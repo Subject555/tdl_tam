@@ -82,6 +82,7 @@ i :
 | WHILE exp=e li=bloc               {TantQue (exp,li)}
 | FOR PO t=typ n1=ID EQUAL e1=e PV e2=e PV n2=ID EQUAL e3=e PF li=bloc {Pour (t,n1,e1,e2,n2,e3,li)}
 
+
 aff :
 | n=ID                    {Variable n}
 | PO MULT a=aff PF              {Deref a}           

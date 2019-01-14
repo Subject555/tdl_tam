@@ -34,12 +34,12 @@ struct
       | AstType.AffichageInt(e) -> (AffichageInt(e),0)
       | AstType.AffichageRat(e) -> (AffichageRat(e),0)
       | AstType.Pour(e1,e2,e3,li,info) -> 
-        (match info_ast_to_info info with
-        | InfoVar(typ,_,_) -> 
-          modifier_adresse_info dep reg info;
-          let nli = analyser_placement_bloc li (dep+(getTaille typ)) reg in
-          (Pour(e1,e2,e3,nli,info),0)
-        | _ -> failwith "")
+      (match info_ast_to_info info with
+      | InfoVar(typ,_,_) -> 
+        modifier_adresse_info dep reg info;
+        let nli = analyser_placement_bloc li (dep+(getTaille typ)) reg in
+        (Pour(e1,e2,e3,nli,info),0)
+      | _ -> failwith "")
       | AstType.Empty -> (Empty,0)
 
   and analyser_placement_bloc li dep reg =
@@ -70,4 +70,5 @@ struct
     let blocanalyse = (analyser_placement_bloc prog  0 "SB") in 
     Programme( fctanalysee,blocanalyse)
 
-end
+  end
+  
