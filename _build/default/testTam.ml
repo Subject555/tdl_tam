@@ -3,7 +3,7 @@ open Compilateur
 open Code
 (* Changer le chemin d'accès du jar. *)
 let runtamcmde = "java -jar ../../runtam/runtam.jar"
-(*
+
 (* read up to maxlen characters from the input channel. *)
 let load_chan ic =
   let maxlen = 10000 in   (* this is ugly but I cannot use in_channel_length on a pipe *)
@@ -118,4 +118,7 @@ let%expect_test "factfuns" =
 let%expect_test "complique" =
   runtam "../../fichiersRat/src-rat-tam-test/complique.rat";
   [%expect{| [9/4][27/14][27/16][3/2] |}]
-  *)
+  
+let%expect_test "TestPour" = 
+  runtam "../../fichiersRat/testPour.rat";
+  [%expect{|  |}]

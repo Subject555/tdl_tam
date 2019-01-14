@@ -37,9 +37,6 @@ module Tds = Rat__Tds
 (** @canonical Rat.TestPlacement *)
 module TestPlacement = Rat__TestPlacement
 
-(** @canonical Rat.TestPour *)
-module TestPour = Rat__TestPour
-
 (** @canonical Rat.TestTDS *)
 module TestTDS = Rat__TestTDS
 

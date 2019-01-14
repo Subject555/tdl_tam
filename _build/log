@@ -1,17 +1,228 @@
 # jbuilder runtest
 # OCAMLPARAM: unset
-$ /usr/bin/nproc > /tmp/dune2212dc.output 2> /dev/null
-$ /usr/bin/ocamlc.opt -config > /tmp/dune08a54f.output
-$ (cd _build/default && .ppx/jbuild/e57df1918f186b7973f69c8b7c0d56d2/ppx.exe --cookie 'library-name="rat"' -o passeCodeRatToTam.pp.ml --impl passeCodeRatToTam.ml --dump-ast)
-$ (cd _build/default && /usr/bin/ocamldep.opt -modules -impl passeCodeRatToTam.pp.ml) > _build/default/.rat.objs/passeCodeRatToTam.pp.ml.d
-$ (cd _build/default && /usr/bin/ocamlc.opt -w -40 -g -bin-annot -I .rat.objs -I .rat.objs/.private -I /home/martin/.opam/default/lib/base -I /home/martin/.opam/default/lib/base/caml -I /home/martin/.opam/default/lib/base/shadow_stdlib -I /home/martin/.opam/default/lib/fieldslib -I /home/martin/.opam/default/lib/ppx_compare/runtime-lib -I /home/martin/.opam/default/lib/ppx_expect/collector -I /home/martin/.opam/default/lib/ppx_expect/common -I /home/martin/.opam/default/lib/ppx_expect/config -I /home/martin/.opam/default/lib/ppx_inline_test/config -I /home/martin/.opam/default/lib/ppx_inline_test/runtime-lib -I /home/martin/.opam/default/lib/ppx_sexp_conv/runtime-lib -I /home/martin/.opam/default/lib/sexplib0 -no-alias-deps -open Rat -o .rat.objs/rat__PasseCodeRatToTam.cmo -c -impl passeCodeRatToTam.pp.ml)
-$ (cd _build/default && /usr/bin/ocamlc.opt -w -24 -bin-annot -I .rat.inline-tests -I /home/martin/.opam/default/lib/base -I /home/martin/.opam/default/lib/base/caml -I /home/martin/.opam/default/lib/base/shadow_stdlib -I /home/martin/.opam/default/lib/fieldslib -I /home/martin/.opam/default/lib/ppx_assert/runtime-lib -I /home/martin/.opam/default/lib/ppx_compare/runtime-lib -I /home/martin/.opam/default/lib/ppx_expect/collector -I /home/martin/.opam/default/lib/ppx_expect/common -I /home/martin/.opam/default/lib/ppx_expect/config -I /home/martin/.opam/default/lib/ppx_expect/evaluator -I /home/martin/.opam/default/lib/ppx_expect/matcher -I /home/martin/.opam/default/lib/ppx_inline_test/config -I /home/martin/.opam/default/lib/ppx_inline_test/runner/lib -I /home/martin/.opam/default/lib/ppx_inline_test/runtime-lib -I /home/martin/.opam/default/lib/ppx_sexp_conv/runtime-lib -I /home/martin/.opam/default/lib/ppxlib/print_diff -I /home/martin/.opam/default/lib/re -I /home/martin/.opam/default/lib/re/emacs -I /home/martin/.opam/default/lib/re/glob -I /home/martin/.opam/default/lib/sexplib0 -I /home/martin/.opam/default/lib/stdio -I /home/martin/.opam/default/lib/variantslib -I .rat.objs -no-alias-deps -o .rat.inline-tests/run.cmo -c -impl .rat.inline-tests/run.ml)
-$ (cd _build/default && /usr/bin/ocamlopt.opt -w -40 -g -I .rat.objs -I .rat.objs/.private -I /home/martin/.opam/default/lib/base -I /home/martin/.opam/default/lib/base/caml -I /home/martin/.opam/default/lib/base/shadow_stdlib -I /home/martin/.opam/default/lib/fieldslib -I /home/martin/.opam/default/lib/ppx_compare/runtime-lib -I /home/martin/.opam/default/lib/ppx_expect/collector -I /home/martin/.opam/default/lib/ppx_expect/common -I /home/martin/.opam/default/lib/ppx_expect/config -I /home/martin/.opam/default/lib/ppx_inline_test/config -I /home/martin/.opam/default/lib/ppx_inline_test/runtime-lib -I /home/martin/.opam/default/lib/ppx_sexp_conv/runtime-lib -I /home/martin/.opam/default/lib/sexplib0 -intf-suffix .ml -no-alias-deps -open Rat -o .rat.objs/rat__PasseCodeRatToTam.cmx -c -impl passeCodeRatToTam.pp.ml)
-$ (cd _build/default && /usr/bin/ocamlopt.opt -w -40 -g -a -o rat.cmxa .rat.objs/rat.cmx .rat.objs/rat__Type.cmx .rat.objs/rat__Tds.cmx .rat.objs/rat__Ast.cmx .rat.objs/rat__Code.cmx .rat.objs/rat__Exceptions.cmx .rat.objs/rat__Parser.cmx .rat.objs/rat__Lexer.cmx .rat.objs/rat__Passe.cmx .rat.objs/rat__PasseTdsRat.cmx .rat.objs/rat__PasseTypeRat.cmx .rat.objs/rat__Compilateur.cmx .rat.objs/rat__PasseCodeRatToTam.cmx .rat.objs/rat__PassePlacementRat.cmx .rat.objs/rat__TestPlacement.cmx .rat.objs/rat__TestPour.cmx .rat.objs/rat__TestTDS.cmx .rat.objs/rat__TestTam.cmx .rat.objs/rat__TestType.cmx)
-$ (cd _build/default && /usr/bin/ocamlopt.opt -w -24 -I .rat.inline-tests -I /home/martin/.opam/default/lib/base -I /home/martin/.opam/default/lib/base/caml -I /home/martin/.opam/default/lib/base/shadow_stdlib -I /home/martin/.opam/default/lib/fieldslib -I /home/martin/.opam/default/lib/ppx_assert/runtime-lib -I /home/martin/.opam/default/lib/ppx_compare/runtime-lib -I /home/martin/.opam/default/lib/ppx_expect/collector -I /home/martin/.opam/default/lib/ppx_expect/common -I /home/martin/.opam/default/lib/ppx_expect/config -I /home/martin/.opam/default/lib/ppx_expect/evaluator -I /home/martin/.opam/default/lib/ppx_expect/matcher -I /home/martin/.opam/default/lib/ppx_inline_test/config -I /home/martin/.opam/default/lib/ppx_inline_test/runner/lib -I /home/martin/.opam/default/lib/ppx_inline_test/runtime-lib -I /home/martin/.opam/default/lib/ppx_sexp_conv/runtime-lib -I /home/martin/.opam/default/lib/ppxlib/print_diff -I /home/martin/.opam/default/lib/re -I /home/martin/.opam/default/lib/re/emacs -I /home/martin/.opam/default/lib/re/glob -I /home/martin/.opam/default/lib/sexplib0 -I /home/martin/.opam/default/lib/stdio -I /home/martin/.opam/default/lib/variantslib -I .rat.objs -intf-suffix .ml -no-alias-deps -o .rat.inline-tests/run.cmx -c -impl .rat.inline-tests/run.ml)
-$ (cd _build/default && /usr/bin/ocamlopt.opt -w -24 -o .rat.inline-tests/run.exe -linkall -I /home/martin/.opam/default/lib/base -I /home/martin/.opam/default/lib/base/caml -I /home/martin/.opam/default/lib/base/shadow_stdlib -I /home/martin/.opam/default/lib/fieldslib -I /home/martin/.opam/default/lib/ppx_assert/runtime-lib -I /home/martin/.opam/default/lib/ppx_compare/runtime-lib -I /home/martin/.opam/default/lib/ppx_expect/collector -I /home/martin/.opam/default/lib/ppx_expect/common -I /home/martin/.opam/default/lib/ppx_expect/config -I /home/martin/.opam/default/lib/ppx_expect/evaluator -I /home/martin/.opam/default/lib/ppx_expect/matcher -I /home/martin/.opam/default/lib/ppx_inline_test/config -I /home/martin/.opam/default/lib/ppx_inline_test/runner/lib -I /home/martin/.opam/default/lib/ppx_inline_test/runtime-lib -I /home/martin/.opam/default/lib/ppx_sexp_conv/runtime-lib -I /home/martin/.opam/default/lib/ppxlib/print_diff -I /home/martin/.opam/default/lib/re -I /home/martin/.opam/default/lib/re/emacs -I /home/martin/.opam/default/lib/re/glob -I /home/martin/.opam/default/lib/sexplib0 -I /home/martin/.opam/default/lib/stdio -I /home/martin/.opam/default/lib/variantslib -I . /home/martin/.opam/default/lib/base/caml/caml.cmxa /home/martin/.opam/default/lib/base/shadow_stdlib/shadow_stdlib.cmxa /home/martin/.opam/default/lib/sexplib0/sexplib0.cmxa /home/martin/.opam/default/lib/base/base.cmxa /home/martin/.opam/default/lib/fieldslib/fieldslib.cmxa /home/martin/.opam/default/lib/ppx_compare/runtime-lib/ppx_compare_lib.cmxa /home/martin/.opam/default/lib/ppx_sexp_conv/runtime-lib/ppx_sexp_conv_lib.cmxa /home/martin/.opam/default/lib/ppx_expect/common/expect_test_common.cmxa /home/martin/.opam/default/lib/ppx_expect/config/expect_test_config.cmxa /home/martin/.opam/default/lib/ppx_inline_test/config/inline_test_config.cmxa /home/martin/.opam/default/lib/ppx_inline_test/runtime-lib/ppx_inline_test_lib.cmxa /home/martin/.opam/default/lib/ppx_expect/collector/expect_test_collector.cmxa /usr/lib/ocaml/unix.cmxa rat.cmxa /home/martin/.opam/default/lib/ppx_inline_test/runner/lib/ppx_inline_test_runner_lib.cmxa /home/martin/.opam/default/lib/ppx_assert/runtime-lib/ppx_assert_lib.cmxa /home/martin/.opam/default/lib/re/re.cmxa /home/martin/.opam/default/lib/re/emacs/re_emacs.cmxa /home/martin/.opam/default/lib/re/glob/re_glob.cmxa /home/martin/.opam/default/lib/stdio/stdio.cmxa /home/martin/.opam/default/lib/variantslib/variantslib.cmxa /home/martin/.opam/default/lib/ppx_expect/matcher/expect_test_matcher.cmxa /home/martin/.opam/default/lib/ppxlib/print_diff/ppxlib_print_diff.cmxa /home/martin/.opam/default/lib/ppx_expect/evaluator/ppx_expect_evaluator.cmxa .rat.inline-tests/run.cmx)
+$ /usr/bin/nproc > /tmp/dune73ce34.output
+$ /opt/opam/4.06.0/bin/ocamlc.opt -config > /tmp/duneec7b2c.output
+$ (cd _build/default && .ppx/jbuild/ppx_inline_test+ppx_expect/ppx.exe --cookie 'library-name="rat"' -o passeCodeRatToTam.pp.ml --impl passeCodeRatToTam.ml --dump-ast)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamldep.opt -modules -impl passeCodeRatToTam.pp.ml) > _build/default/.rat.objs/passeCodeRatToTam.pp.ml.d
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlc.opt -w -40 -g -bin-annot -I .rat.objs -I /opt/opam/4.06.0/lib/base -I /opt/opam/4.06.0/lib/base/caml -I /opt/opam/4.06.0/lib/base/shadow_stdlib -I /opt/opam/4.06.0/lib/fieldslib -I /opt/opam/4.06.0/lib/ppx_compare/runtime-lib -I /opt/opam/4.06.0/lib/ppx_expect/collector -I /opt/opam/4.06.0/lib/ppx_expect/common -I /opt/opam/4.06.0/lib/ppx_expect/config -I /opt/opam/4.06.0/lib/ppx_inline_test/config -I /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib -I /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib -I /opt/opam/4.06.0/lib/sexplib0 -no-alias-deps -open Rat -o .rat.objs/rat__PasseCodeRatToTam.cmo -c -impl passeCodeRatToTam.pp.ml)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlc.opt -w -40 -g -bin-annot -I .rat.objs -I /opt/opam/4.06.0/lib/base -I /opt/opam/4.06.0/lib/base/caml -I /opt/opam/4.06.0/lib/base/shadow_stdlib -I /opt/opam/4.06.0/lib/fieldslib -I /opt/opam/4.06.0/lib/ppx_compare/runtime-lib -I /opt/opam/4.06.0/lib/ppx_expect/collector -I /opt/opam/4.06.0/lib/ppx_expect/common -I /opt/opam/4.06.0/lib/ppx_expect/config -I /opt/opam/4.06.0/lib/ppx_inline_test/config -I /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib -I /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib -I /opt/opam/4.06.0/lib/sexplib0 -no-alias-deps -open Rat -o .rat.objs/rat__Compilateur.cmo -c -impl compilateur.pp.ml)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlopt.opt -w -40 -g -I .rat.objs -I /opt/opam/4.06.0/lib/base -I /opt/opam/4.06.0/lib/base/caml -I /opt/opam/4.06.0/lib/base/shadow_stdlib -I /opt/opam/4.06.0/lib/fieldslib -I /opt/opam/4.06.0/lib/ppx_compare/runtime-lib -I /opt/opam/4.06.0/lib/ppx_expect/collector -I /opt/opam/4.06.0/lib/ppx_expect/common -I /opt/opam/4.06.0/lib/ppx_expect/config -I /opt/opam/4.06.0/lib/ppx_inline_test/config -I /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib -I /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib -I /opt/opam/4.06.0/lib/sexplib0 -intf-suffix .ml -no-alias-deps -open Rat -o .rat.objs/rat__PasseCodeRatToTam.cmx -c -impl passeCodeRatToTam.pp.ml)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlc.opt -w -40 -g -bin-annot -I .rat.objs -I /opt/opam/4.06.0/lib/base -I /opt/opam/4.06.0/lib/base/caml -I /opt/opam/4.06.0/lib/base/shadow_stdlib -I /opt/opam/4.06.0/lib/fieldslib -I /opt/opam/4.06.0/lib/ppx_compare/runtime-lib -I /opt/opam/4.06.0/lib/ppx_expect/collector -I /opt/opam/4.06.0/lib/ppx_expect/common -I /opt/opam/4.06.0/lib/ppx_expect/config -I /opt/opam/4.06.0/lib/ppx_inline_test/config -I /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib -I /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib -I /opt/opam/4.06.0/lib/sexplib0 -no-alias-deps -open Rat -o .rat.objs/rat__TestPlacement.cmo -c -impl testPlacement.pp.ml)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlc.opt -w -40 -g -bin-annot -I .rat.objs -I /opt/opam/4.06.0/lib/base -I /opt/opam/4.06.0/lib/base/caml -I /opt/opam/4.06.0/lib/base/shadow_stdlib -I /opt/opam/4.06.0/lib/fieldslib -I /opt/opam/4.06.0/lib/ppx_compare/runtime-lib -I /opt/opam/4.06.0/lib/ppx_expect/collector -I /opt/opam/4.06.0/lib/ppx_expect/common -I /opt/opam/4.06.0/lib/ppx_expect/config -I /opt/opam/4.06.0/lib/ppx_inline_test/config -I /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib -I /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib -I /opt/opam/4.06.0/lib/sexplib0 -no-alias-deps -open Rat -o .rat.objs/rat__TestTDS.cmo -c -impl testTDS.pp.ml)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlc.opt -w -40 -g -bin-annot -I .rat.objs -I /opt/opam/4.06.0/lib/base -I /opt/opam/4.06.0/lib/base/caml -I /opt/opam/4.06.0/lib/base/shadow_stdlib -I /opt/opam/4.06.0/lib/fieldslib -I /opt/opam/4.06.0/lib/ppx_compare/runtime-lib -I /opt/opam/4.06.0/lib/ppx_expect/collector -I /opt/opam/4.06.0/lib/ppx_expect/common -I /opt/opam/4.06.0/lib/ppx_expect/config -I /opt/opam/4.06.0/lib/ppx_inline_test/config -I /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib -I /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib -I /opt/opam/4.06.0/lib/sexplib0 -no-alias-deps -open Rat -o .rat.objs/rat__TestType.cmo -c -impl testType.pp.ml)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlopt.opt -w -40 -g -I .rat.objs -I /opt/opam/4.06.0/lib/base -I /opt/opam/4.06.0/lib/base/caml -I /opt/opam/4.06.0/lib/base/shadow_stdlib -I /opt/opam/4.06.0/lib/fieldslib -I /opt/opam/4.06.0/lib/ppx_compare/runtime-lib -I /opt/opam/4.06.0/lib/ppx_expect/collector -I /opt/opam/4.06.0/lib/ppx_expect/common -I /opt/opam/4.06.0/lib/ppx_expect/config -I /opt/opam/4.06.0/lib/ppx_inline_test/config -I /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib -I /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib -I /opt/opam/4.06.0/lib/sexplib0 -intf-suffix .ml -no-alias-deps -open Rat -o .rat.objs/rat__Compilateur.cmx -c -impl compilateur.pp.ml)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlc.opt -w -40 -g -bin-annot -I .rat.objs -I /opt/opam/4.06.0/lib/base -I /opt/opam/4.06.0/lib/base/caml -I /opt/opam/4.06.0/lib/base/shadow_stdlib -I /opt/opam/4.06.0/lib/fieldslib -I /opt/opam/4.06.0/lib/ppx_compare/runtime-lib -I /opt/opam/4.06.0/lib/ppx_expect/collector -I /opt/opam/4.06.0/lib/ppx_expect/common -I /opt/opam/4.06.0/lib/ppx_expect/config -I /opt/opam/4.06.0/lib/ppx_inline_test/config -I /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib -I /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib -I /opt/opam/4.06.0/lib/sexplib0 -no-alias-deps -open Rat -o .rat.objs/rat__TestTam.cmo -c -impl testTam.pp.ml)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlopt.opt -w -40 -g -I .rat.objs -I /opt/opam/4.06.0/lib/base -I /opt/opam/4.06.0/lib/base/caml -I /opt/opam/4.06.0/lib/base/shadow_stdlib -I /opt/opam/4.06.0/lib/fieldslib -I /opt/opam/4.06.0/lib/ppx_compare/runtime-lib -I /opt/opam/4.06.0/lib/ppx_expect/collector -I /opt/opam/4.06.0/lib/ppx_expect/common -I /opt/opam/4.06.0/lib/ppx_expect/config -I /opt/opam/4.06.0/lib/ppx_inline_test/config -I /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib -I /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib -I /opt/opam/4.06.0/lib/sexplib0 -intf-suffix .ml -no-alias-deps -open Rat -o .rat.objs/rat__TestPlacement.cmx -c -impl testPlacement.pp.ml)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlopt.opt -w -40 -g -I .rat.objs -I /opt/opam/4.06.0/lib/base -I /opt/opam/4.06.0/lib/base/caml -I /opt/opam/4.06.0/lib/base/shadow_stdlib -I /opt/opam/4.06.0/lib/fieldslib -I /opt/opam/4.06.0/lib/ppx_compare/runtime-lib -I /opt/opam/4.06.0/lib/ppx_expect/collector -I /opt/opam/4.06.0/lib/ppx_expect/common -I /opt/opam/4.06.0/lib/ppx_expect/config -I /opt/opam/4.06.0/lib/ppx_inline_test/config -I /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib -I /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib -I /opt/opam/4.06.0/lib/sexplib0 -intf-suffix .ml -no-alias-deps -open Rat -o .rat.objs/rat__TestTDS.cmx -c -impl testTDS.pp.ml)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlopt.opt -w -40 -g -I .rat.objs -I /opt/opam/4.06.0/lib/base -I /opt/opam/4.06.0/lib/base/caml -I /opt/opam/4.06.0/lib/base/shadow_stdlib -I /opt/opam/4.06.0/lib/fieldslib -I /opt/opam/4.06.0/lib/ppx_compare/runtime-lib -I /opt/opam/4.06.0/lib/ppx_expect/collector -I /opt/opam/4.06.0/lib/ppx_expect/common -I /opt/opam/4.06.0/lib/ppx_expect/config -I /opt/opam/4.06.0/lib/ppx_inline_test/config -I /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib -I /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib -I /opt/opam/4.06.0/lib/sexplib0 -intf-suffix .ml -no-alias-deps -open Rat -o .rat.objs/rat__TestType.cmx -c -impl testType.pp.ml)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlc.opt -w -24 -bin-annot -I .rat.inline-tests -I /opt/opam/4.06.0/lib/base -I /opt/opam/4.06.0/lib/base/caml -I /opt/opam/4.06.0/lib/base/shadow_stdlib -I /opt/opam/4.06.0/lib/fieldslib -I /opt/opam/4.06.0/lib/ppx_assert/runtime-lib -I /opt/opam/4.06.0/lib/ppx_compare/runtime-lib -I /opt/opam/4.06.0/lib/ppx_expect/collector -I /opt/opam/4.06.0/lib/ppx_expect/common -I /opt/opam/4.06.0/lib/ppx_expect/config -I /opt/opam/4.06.0/lib/ppx_expect/evaluator -I /opt/opam/4.06.0/lib/ppx_expect/matcher -I /opt/opam/4.06.0/lib/ppx_inline_test/config -I /opt/opam/4.06.0/lib/ppx_inline_test/runner/lib -I /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib -I /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib -I /opt/opam/4.06.0/lib/ppxlib/print_diff -I /opt/opam/4.06.0/lib/re -I /opt/opam/4.06.0/lib/re/emacs -I /opt/opam/4.06.0/lib/re/glob -I /opt/opam/4.06.0/lib/seq -I /opt/opam/4.06.0/lib/sexplib0 -I /opt/opam/4.06.0/lib/stdio -I /opt/opam/4.06.0/lib/variantslib -I .rat.objs -no-alias-deps -o .rat.inline-tests/run.cmo -c -impl .rat.inline-tests/run.ml)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlopt.opt -w -40 -g -I .rat.objs -I /opt/opam/4.06.0/lib/base -I /opt/opam/4.06.0/lib/base/caml -I /opt/opam/4.06.0/lib/base/shadow_stdlib -I /opt/opam/4.06.0/lib/fieldslib -I /opt/opam/4.06.0/lib/ppx_compare/runtime-lib -I /opt/opam/4.06.0/lib/ppx_expect/collector -I /opt/opam/4.06.0/lib/ppx_expect/common -I /opt/opam/4.06.0/lib/ppx_expect/config -I /opt/opam/4.06.0/lib/ppx_inline_test/config -I /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib -I /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib -I /opt/opam/4.06.0/lib/sexplib0 -intf-suffix .ml -no-alias-deps -open Rat -o .rat.objs/rat__TestTam.cmx -c -impl testTam.pp.ml)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlopt.opt -w -24 -I .rat.inline-tests -I /opt/opam/4.06.0/lib/base -I /opt/opam/4.06.0/lib/base/caml -I /opt/opam/4.06.0/lib/base/shadow_stdlib -I /opt/opam/4.06.0/lib/fieldslib -I /opt/opam/4.06.0/lib/ppx_assert/runtime-lib -I /opt/opam/4.06.0/lib/ppx_compare/runtime-lib -I /opt/opam/4.06.0/lib/ppx_expect/collector -I /opt/opam/4.06.0/lib/ppx_expect/common -I /opt/opam/4.06.0/lib/ppx_expect/config -I /opt/opam/4.06.0/lib/ppx_expect/evaluator -I /opt/opam/4.06.0/lib/ppx_expect/matcher -I /opt/opam/4.06.0/lib/ppx_inline_test/config -I /opt/opam/4.06.0/lib/ppx_inline_test/runner/lib -I /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib -I /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib -I /opt/opam/4.06.0/lib/ppxlib/print_diff -I /opt/opam/4.06.0/lib/re -I /opt/opam/4.06.0/lib/re/emacs -I /opt/opam/4.06.0/lib/re/glob -I /opt/opam/4.06.0/lib/seq -I /opt/opam/4.06.0/lib/sexplib0 -I /opt/opam/4.06.0/lib/stdio -I /opt/opam/4.06.0/lib/variantslib -I .rat.objs -intf-suffix .ml -no-alias-deps -o .rat.inline-tests/run.cmx -c -impl .rat.inline-tests/run.ml)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlopt.opt -w -40 -g -a -o rat.cmxa .rat.objs/rat.cmx .rat.objs/rat__Type.cmx .rat.objs/rat__Tds.cmx .rat.objs/rat__Ast.cmx .rat.objs/rat__Code.cmx .rat.objs/rat__Exceptions.cmx .rat.objs/rat__Parser.cmx .rat.objs/rat__Lexer.cmx .rat.objs/rat__Passe.cmx .rat.objs/rat__PasseCodeRatToTam.cmx .rat.objs/rat__PassePlacementRat.cmx .rat.objs/rat__PasseTdsRat.cmx .rat.objs/rat__PasseTypeRat.cmx .rat.objs/rat__Compilateur.cmx .rat.objs/rat__TestType.cmx .rat.objs/rat__TestTam.cmx .rat.objs/rat__TestTDS.cmx .rat.objs/rat__TestPlacement.cmx)
+$ (cd _build/default && /opt/opam/4.06.0/bin/ocamlopt.opt -w -24 -o .rat.inline-tests/run.exe -linkall -I /opt/opam/4.06.0/lib/base -I /opt/opam/4.06.0/lib/base/caml -I /opt/opam/4.06.0/lib/base/shadow_stdlib -I /opt/opam/4.06.0/lib/fieldslib -I /opt/opam/4.06.0/lib/ppx_assert/runtime-lib -I /opt/opam/4.06.0/lib/ppx_compare/runtime-lib -I /opt/opam/4.06.0/lib/ppx_expect/collector -I /opt/opam/4.06.0/lib/ppx_expect/common -I /opt/opam/4.06.0/lib/ppx_expect/config -I /opt/opam/4.06.0/lib/ppx_expect/evaluator -I /opt/opam/4.06.0/lib/ppx_expect/matcher -I /opt/opam/4.06.0/lib/ppx_inline_test/config -I /opt/opam/4.06.0/lib/ppx_inline_test/runner/lib -I /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib -I /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib -I /opt/opam/4.06.0/lib/ppxlib/print_diff -I /opt/opam/4.06.0/lib/re -I /opt/opam/4.06.0/lib/re/emacs -I /opt/opam/4.06.0/lib/re/glob -I /opt/opam/4.06.0/lib/seq -I /opt/opam/4.06.0/lib/sexplib0 -I /opt/opam/4.06.0/lib/stdio -I /opt/opam/4.06.0/lib/variantslib -I . /opt/opam/4.06.0/lib/base/caml/caml.cmxa /opt/opam/4.06.0/lib/base/shadow_stdlib/shadow_stdlib.cmxa /opt/opam/4.06.0/lib/sexplib0/sexplib0.cmxa /opt/opam/4.06.0/lib/base/base.cmxa /opt/opam/4.06.0/lib/fieldslib/fieldslib.cmxa /opt/opam/4.06.0/lib/ppx_compare/runtime-lib/ppx_compare_lib.cmxa /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib/ppx_sexp_conv_lib.cmxa /opt/opam/4.06.0/lib/ppx_expect/common/expect_test_common.cmxa /opt/opam/4.06.0/lib/ppx_expect/config/expect_test_config.cmxa /opt/opam/4.06.0/lib/ppx_inline_test/config/inline_test_config.cmxa /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib/ppx_inline_test_lib.cmxa /opt/opam/4.06.0/lib/ppx_expect/collector/expect_test_collector.cmxa /opt/opam/4.06.0/lib/ocaml/unix.cmxa rat.cmxa /opt/opam/4.06.0/lib/ppx_inline_test/runner/lib/ppx_inline_test_runner_lib.cmxa /opt/opam/4.06.0/lib/ppx_assert/runtime-lib/ppx_assert_lib.cmxa /opt/opam/4.06.0/lib/seq/seq.cmxa /opt/opam/4.06.0/lib/re/re.cmxa /opt/opam/4.06.0/lib/re/emacs/re_emacs.cmxa /opt/opam/4.06.0/lib/re/glob/re_glob.cmxa /opt/opam/4.06.0/lib/stdio/stdio.cmxa /opt/opam/4.06.0/lib/variantslib/variantslib.cmxa /opt/opam/4.06.0/lib/ppx_expect/matcher/expect_test_matcher.cmxa /opt/opam/4.06.0/lib/ppxlib/print_diff/ppxlib_print_diff.cmxa /opt/opam/4.06.0/lib/ppx_expect/evaluator/ppx_expect_evaluator.cmxa .rat.inline-tests/run.cmx)
 $ (cd _build/default && .rat.inline-tests/run.exe inline-test-runner rat -source-tree-root . -diff-cmd -)
-> AST : 
-> Pour : FOR (Int x=0  ; x  < 5   ; x=x  + 1  )
-> Affichage  : x  
->
+$ (cd _build/default && /usr/bin/diff -u testTam.ml testTam.ml.corrected)
+> --- testTam.ml	2019-01-14 15:11:18.676507408 +0100
+> +++ testTam.ml.corrected	2019-01-14 15:16:45.718267815 +0100
+> @@ -57,68 +57,181 @@
+>  
+>  let%expect_test "testprintint" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testprintint.rat";
+> -  [%expect{| 42 |}]
+> +  [%expect{|
+> +    AST :
+> +    Affichage  : 42
+> +    42 |}]
+>  
+>  let%expect_test "testprintbool" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testprintbool.rat";
+> -  [%expect{| true |}]
+> +  [%expect{|
+> +    AST :
+> +    Affichage  : true
+> +    true |}]
+>  
+>  let%expect_test "testprintrat" =
+>     runtam "../../fichiersRat/src-rat-tam-test/testprintrat.rat";
+> -   [%expect{| [4/5] |}]
+> +   [%expect{|
+> +     AST :
+> +     Affichage  : [4 /5 ]
+> +     [4/5] |}]
+>  
+>  let%expect_test "testaddint" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testaddint.rat";
+> -  [%expect{| 42 |}]
+> +  [%expect{|
+> +    AST :
+> +    Affichage  : 20 + 22
+> +    42 |}]
+>  
+>  let%expect_test "testaddrat" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testaddrat.rat";
+> -  [%expect{| [7/6] |}]
+> +  [%expect{|
+> +    AST :
+> +    Affichage  : [1 /2 ] + [2 /3 ]
+> +    [7/6] |}]
+>  
+>  let%expect_test "testmultint" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testmultint.rat";
+> -  [%expect{| 440 |}]
+> +  [%expect{|
+> +    AST :
+> +    Affichage  : 20 * 22
+> +    440 |}]
+>  
+>  let%expect_test "testmultrat" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testmultrat.rat";
+> -  [%expect{| [14/3] |}]
+> +  [%expect{|
+> +    AST :
+> +    Affichage  : [7 /2 ] * [4 /3 ]
+> +    [14/3] |}]
+>  
+>  let%expect_test "testnum" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testnum.rat";
+> -  [%expect{| 4 |}]
+> +  [%expect{|
+> +    AST :
+> +    Declaration  : Rat x = [4 /7 ]
+> +    Affichage  : num x
+> +    4 |}]
+>  
+>  let%expect_test "testdenom" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testdenom.rat";
+> -  [%expect{| 7 |}]
+> +  [%expect{|
+> +    AST :
+> +    Declaration  : Rat x = [4 /7 ]
+> +    Affichage  : denom x
+> +    7 |}]
+>  
+>  let%expect_test "testwhile1" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testwhile1.rat";
+> -  [%expect{| 19 |}]
+> +  [%expect{|
+> +    AST :
+> +    Declaration  : Int x = 1
+> +    Declaration  : Int y = 1
+> +    TantQue  : TQ y  < 10
+> +    FAIRE
+> +    Affectation  : x  = x  + 2
+> +    Affectation  : y  = y  + 1
+> +
+> +    Affichage  : x
+> +    19 |}]
+>  
+>  let%expect_test "testif1" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testif1.rat";
+> -  [%expect{| 18 |}]
+> +  [%expect{|
+> +    AST :
+> +    Declaration  : Int x = 1
+> +    Declaration  : Int y = 1
+> +    Conditionnelle  : IF x  = y
+> +    THEN
+> +    Affichage  : 18
+> +    ELSE
+> +    Affichage  : 21
+> +
+> +    18 |}]
+>  
+>  let%expect_test "testif2" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testif2.rat";
+> -  [%expect{| 21 |}]
+> +  [%expect{|
+> +    AST :
+> +    Declaration  : Int x = 1
+> +    Declaration  : Int y = 2
+> +    Conditionnelle  : IF x  = y
+> +    THEN
+> +    Affichage  : 18
+> +    ELSE
+> +    Affichage  : 21
+> +
+> +    21 |}]
+>    
+>  let%expect_test "factiter" =
+>    runtam "../../fichiersRat/src-rat-tam-test/factiter.rat";
+> -  [%expect{| 120 |}]
+> +  [%expect{|
+> +    AST :
+> +    Constante  : n = 5
+> +    Declaration  : Int fact = 1
+> +    Declaration  : Int i = 1
+> +    TantQue  : TQ i  < n  + 1
+> +    FAIRE
+> +    Affectation  : fact  = fact  * i
+> +    Affectation  : i  = i  + 1
+> +
+> +    Affichage  : fact
+> +    120 |}]
+>  
+>  let%expect_test "factrec" =
+>    runtam "../../fichiersRat/src-rat-tam-test/factrec.rat";
+> -  [%expect{| 120 |}]
+> +  [%expect{|
+> +    AST :
+> +    Int fact (Int i Int n ) =
+> +    Declaration  : Int res = 0
+> +    Conditionnelle  : IF i  = n
+> +    THEN
+> +    Affectation  : res  = i
+> +    ELSE
+> +    Affectation  : res  = i  * call fact(i  + 1  n  )
+> +
+> +    Return res
+> +    Declaration  : Int x = call fact(1 5 )
+> +    Affichage  : x
+> +    120 |}]
+>  
+>  let%expect_test "factfuns" =
+>    runtam "../../fichiersRat/src-rat-tam-test/testfuns.rat";
+> -  [%expect{| 28 |}]
+> +  [%expect{|
+> +    AST :
+> +    Rat f3 (Int a Int b Rat r ) =
+> +    Return [a  + num r    /b  + denom r    ]
+> +    Rat f2 (Bool b Rat x Rat y ) =
+> +    Declaration  : Int x1 = num x
+> +    Declaration  : Int x2 = denom x
+> +    Declaration  : Rat res = call f3(x1  x2  y  )
+> +    Return res
+> +    Int f1 (Int i Rat r Int n ) =
+> +    Declaration  : Rat sr = call f2(true r  [i  /n  ] )
+> +    Return denom sr
+> +    Declaration  : Int x = call f1(13 [4 /11 ] 17 )
+> +    Affichage  : x
+> +    28 |}]
+>  
+>  let%expect_test "complique" =
+>    runtam "../../fichiersRat/src-rat-tam-test/complique.rat";
+> -  [%expect{| [9/4][27/14][27/16][3/2] |}]
+> +  [%expect{|
+> +    AST :
+> +    Constante  : a = 5
+> +    Declaration  : Rat x = [6 /a  ]
+> +    Declaration  : Int y = a  + 1
+> +    Affectation  : x  = x  + [3 /2 ]
+> +    TantQue  : TQ y  < 10
+> +    FAIRE
+> +    Affichage  : [a  /y  ] * x
+> +    Affectation  : y  = y  + 1
+> +
+> +    [9/4][27/14][27/16][3/2] |}]
+>    
+>  let%expect_test "TestPour" = 
+>    runtam "../../fichiersRat/testPour.rat";
+> -  [%expect{|  |}]
+> \ No newline at end of file
+> +  [%expect{|
+> +    AST :
+> +    Pour : FOR (Int x=0  ; x  < 5   ; x=x  + 1  )
+> +    Affichage  : x
+> +
+> +    01234 |}]
+> \ No newline at end of file
+[1]

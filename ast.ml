@@ -292,12 +292,17 @@ type fonction = Fonction of string * Tds.info_ast list * bloc * expression * Tds
 type programme = Programme of fonction list * bloc
 
 end
-
 (***********************************)
 (* AST après la phase de placement *)
 (***********************************)
 module AstPlacement =
 struct
+
+
+(* Affectables existants dans notre langage *)
+(* = affectable de AstType  *)
+type affectable = AstType.affectable 
+
 
 (* Expressions existantes dans notre langage *)
 (* = expression de AstType  *)
