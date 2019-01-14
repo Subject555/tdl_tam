@@ -118,7 +118,6 @@ let%expect_test "factfuns" =
 let%expect_test "complique" =
   runtam "../../fichiersRat/src-rat-tam-test/complique.rat";
   [%expect{| [9/4][27/14][27/16][3/2] |}]
-<<<<<<< HEAD
 
 let%expect_test "test_tam_fjsd" = 
   runtam "../../fichiersRat/test.rat";
@@ -128,9 +127,7 @@ let%expect_test "test_tam_fjsdd" =
   runtam "../../fichiersRat/testPt.rat";
   [%expect{| 3 |}]
 
-=======
   
 let%expect_test "TestPour" = 
   runtam "../../fichiersRat/testPour.rat";
-  [%expect{|  |}]
->>>>>>> boucle_for
+  [%expect{| 01234 |}]

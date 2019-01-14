@@ -40,10 +40,7 @@ open Ast.AstSyntax
 %token NULL
 %token NEW
 %token EOF
-<<<<<<< HEAD
-=======
 %token FOR
->>>>>>> boucle_for
 
 (* Type de l'attribut synthétisé des non-terminaux *)
 %type <programme> prog
@@ -83,10 +80,7 @@ i :
 | PRINT e1=e PV                     {Affichage (e1)}
 | IF exp=e li1=bloc ELSE li2=bloc   {Conditionnelle (exp,li1,li2)}
 | WHILE exp=e li=bloc               {TantQue (exp,li)}
-<<<<<<< HEAD
-=======
 | FOR PO t=typ n1=ID EQUAL e1=e PV e2=e PV n2=ID EQUAL e3=e PF li=bloc {Pour (t,n1,e1,e2,n2,e3,li)}
->>>>>>> boucle_for
 
 aff :
 | n=ID                    {Variable n}
