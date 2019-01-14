@@ -1,5 +1,6 @@
 
 (* Module de la passe de gestion des types *)
+
 module PasseTypeRat : Passe.Passe with type t1 = Ast.AstTds.programme and type t2 = Ast.AstType.programme =
 struct
 
@@ -26,8 +27,18 @@ struct
                             (match t1 with
                              |Pt t2-> (t2,Deref(v1))
                              |_-> raise(PasUnPointeur))
-
-  let rec analyse_type_expression e = 
+      | AstTds.Indice(aff,e) -> 
+                            let t_exp,v_exp = analyse_type_expression e in
+                              if t_exp = Int then
+                                let t_tab,v_tab = analyse_type_affectable aff in
+                                  (match t_tab with
+                                    |Tab t-> (t,Indice(v_tab,v_exp))
+                                    |_-> raise(PasUnTableau)
+                                  )
+                              else
+                                raise(TypeInattendu(t_exp,Int))
+                            
+  and analyse_type_expression e = 
     match e with
     | AstTds.Rationnel (e1,e2) ->
       let t1,v1 = analyse_type_expression e1 in
@@ -55,15 +66,13 @@ struct
     | AstTds.False -> (Bool,False)
     | AstTds.Entier(i) -> (Int,Entier(i))
     | AstTds.Null -> (Undefined,Null)
-    | AstTds.Allocation(t) ->   
-    (match t with
-      |Int -> (Pt Int,Allocation Int)
-      |Rat -> (Pt Rat,Allocation Rat)
-      |Bool ->(Pt Rat,Allocation Bool)
-      |Pt (tp) -> (Pt (Pt tp),Allocation (Pt tp))
-      |Undefined -> failwith "Allocation type Undefined"    
-   )
-    
+    | AstTds.Allocation(t) -> Pt(t),Allocation (t)
+    | AstTds.TabAllocation(t,exp) -> let t_exp,v_exp = analyse_type_expression exp in
+                  if t_exp = Int then 
+                    (Tab(t), TabAllocation(t,v_exp))
+                  else
+                  raise(TypeInattendu(t_exp,Int))
+
     | AstTds.Adresse(info_ast) -> let info = info_ast_to_info info_ast in
       
       (match info with

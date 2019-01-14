@@ -24,7 +24,6 @@ open Ast.AstSyntax
 %token BOOL
 %token INT
 %token RAT
-%token POINTEUR
 %token CALL 
 %token CO
 %token CF
@@ -82,7 +81,8 @@ i :
 
 aff :
 | n=ID                    {Variable n}
-| PO MULT a=aff PF              {Deref a}           
+| PO MULT a=aff PF        {Deref a}
+| PO a=aff CO e1=e CF PF  {Indice(a,e1)}               
 
 dp :
 |                         {[]}
@@ -93,6 +93,8 @@ typ :
 | INT     {Int}
 | RAT     {Rat}
 | t=typ MULT  {Pt t}
+| t=typ CO CF {Tab t}
+| PO t=typ PF {t}(*mettre un nom*)
 
 e : 
 | CALL n=ID PO lp=cp PF   {AppelFonction (n,lp)}
@@ -106,6 +108,7 @@ e :
 | a=aff              {Valeur(a)}
 | PO NEW t=typ PF              {Allocation(t)}
 | ADR n=ID                {Adresse(n)}
+| PO NEW t=typ CO e1=e CF PF {TabAllocation(t, e1)}
 | PO e1=e PLUS e2=e PF    {Binaire (Plus,e1,e2)}
 | PO e1=e MULT e2=e PF    {Binaire (Mult,e1,e2)}
 | PO e1=e EQUAL e2=e PF   {Binaire (Equ,e1,e2)}
