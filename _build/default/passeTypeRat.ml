@@ -130,7 +130,6 @@ struct
         (type_f,AppelFonction(nom,lv,info_ast))           
       | _ -> failwith ""
       end
-    | _ -> failwith ""
             
 
 
@@ -192,7 +191,6 @@ end
     else
       raise(TypeInattendu(t1,t))
   | AstTds.Empty -> Empty
-  | _ -> failwith ""
 
 
 and analyse_type_bloc li =
