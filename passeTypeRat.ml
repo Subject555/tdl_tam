@@ -61,17 +61,18 @@ struct
     (match t with
       |Int -> (Pt Int,Allocation Int)
       |Rat -> (Pt Rat,Allocation Rat)
-      |Bool ->(Pt Rat,Allocation Bool)
+      |Bool ->(Pt Bool,Allocation Bool)
       |Pt (tp) -> (Pt (Pt tp),Allocation (Pt tp))
-      |Undefined -> failwith "Allocation type Undefined"    
+      |_ -> failwith "Allocation type Undefined"    
    )
     
     | AstTds.Adresse(info_ast) -> let info = info_ast_to_info info_ast in
       
       (match info with
-        InfoConst(_) -> modifier_type_info Int info_ast; (Int,Adresse(info_ast))
-        | InfoVar(t1,_,_) -> modifier_type_info t1 info_ast; (t1,Adresse(info_ast))
-        | InfoFun(t1,_) -> modifier_type_info t1 info_ast; (t1,Adresse(info_ast))
+        InfoConst(_) -> modifier_type_info Int info_ast; (Pt Int,Adresse(info_ast))
+        | InfoVar(t1,_,_) -> modifier_type_info t1 info_ast; (Pt t1,Adresse(info_ast))
+        | InfoFun(t1,_) -> modifier_type_info t1 info_ast; (Pt t1,Adresse(info_ast))
+        | _ -> failwith ""
     )
     | AstTds.Valeur(aff) -> let t1,v1= analyse_type_affectable(aff) in 
                               (t1,Valeur(v1)) 
@@ -139,19 +140,20 @@ struct
 let rec analyse_type_instruction i =
   match i with
   | AstTds.Declaration(t,e1,info_ast) -> 
+
     let t1,v1 = analyse_type_expression e1 in
     if (est_compatible t1 t) then
       let () = modifier_type_info t info_ast in
       Declaration(v1,info_ast)
     else
-      raise(TypeInattendu(t1,t))
+      raise(TypeInattendu( t1, t))
   | AstTds.Affectation(a, e1) ->
     let t1,v1 = analyse_type_affectable a in 
     let t2,v2 = analyse_type_expression e1 in 
       if (est_compatible t1 t2) then
         Affectation(v1,v2)
       else
-        raise(TypeInattendu(t2,t1))
+        raise(TypeInattendu( t2, t1))
     
   | AstTds.Affichage(e1) ->
     let t1,v1 = analyse_type_expression e1 in 

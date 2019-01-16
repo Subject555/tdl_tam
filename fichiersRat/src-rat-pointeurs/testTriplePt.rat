@@ -1,0 +1,13 @@
+main {
+	bool * pz = (new bool);
+	bool ** ppz = (new bool *);
+	bool *** pppz = (new bool **);
+	
+	bool z = true;
+      	pz = &z;
+  	ppz = &pz;
+   	pppz = &ppz;
+
+   	bool rpppz = (*(*(*pppz)));
+      	print rpppz;
+}

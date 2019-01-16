@@ -1,4 +1,4 @@
-type typ = Bool | Int | Rat | Undefined| Pt of typ | TypeNom of string
+type typ = Bool | Int | Rat | Undefined | Pt of typ | TypeNom of string
 
 let rec string_of_type t = 
   match t with
@@ -17,8 +17,6 @@ let rec est_compatible t1 t2 =
   | Int, Int -> true
   | Rat, Rat -> true
   | Pt t3, Pt t4 -> est_compatible t3 t4
-  | Pt t3, t4 -> est_compatible t3 t4
-  | t3, Pt t4 -> est_compatible t3 t4
   | _ -> false 
 
 let est_compatible_list lt1 lt2 =

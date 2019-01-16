@@ -23,6 +23,8 @@ struct
             | _ -> failwith ""
          )
       )
+    | Pt(typ) -> 
+      let anal_t = analyser_type tds typ in Pt(anal_t)
     | _ -> t
 
 
