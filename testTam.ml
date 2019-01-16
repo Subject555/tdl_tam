@@ -133,3 +133,10 @@ let%expect_test "test_tam_fsdf" =
   [%expect{| 01234 |}]
 
 
+
+  let%expect_test "test_tam_ffdf" = 
+  runtam "../../fichiersRat/testPointeurs.rat";
+  [%expect{| 3[4/2]3 |}]
+
+
+
