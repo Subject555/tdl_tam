@@ -7,9 +7,24 @@ struct
   open Exceptions
   open Ast
   open AstTds
+  open Type
 
   type t1 = Ast.AstSyntax.programme
   type t2 = Ast.AstTds.programme
+
+  let rec analyser_type tds t =
+    match t with 
+    | TypeNom(s) -> 
+      (match chercherGlobalement tds s with
+        | None -> raise (IdentifiantNonDeclare s)
+        | Some info -> 
+         ( match info_ast_to_info info with
+            | InfoType typ -> analyser_type tds typ
+            | _ -> failwith ""
+         )
+      )
+    | _ -> t
+
 
 let rec analyse_tds_affectable tds a modif =
   match a with
@@ -94,7 +109,7 @@ let rec analyse_tds_expression tds e =
       (* L'identifiant est trouvé dans la tds globale, 
           il a donc déjà été déclaré *) 
       Adresse(info))
-  | AstSyntax.Allocation(t)-> Allocation(t)
+  | AstSyntax.Allocation(t)-> let nt = (analyser_type tds t) in Allocation(nt)
   | AstSyntax.Valeur(aff) -> Valeur(analyse_tds_affectable tds aff false)
   | AstSyntax.Binaire (b,e1,e2) ->  
     let ne1 = analyse_tds_expression tds e1 in
@@ -125,11 +140,12 @@ let rec analyse_tds_instruction tds i =
             let info = InfoVar (Undefined, 0, "") in
             (* Création du pointeur sur l'information *)
             let ia = info_to_info_ast info in
+            let nt = analyser_type tds t in
             (* Ajout de l'information (pointeur) dans la tds *)
             ajouter tds n ia;
             (* Renvoie de la nouvelle déclaration où le nom a été remplacé par l'information 
             et l'expression remplacée par l'expression issue de l'analyse *)
-            Declaration (t, ne, ia) 
+            Declaration (nt, ne, ia) 
         | Some _ ->
             (* L'identifiant est trouvé dans la tds locale, 
             il a donc déjà été déclaré dans le bloc courant *) 
@@ -190,18 +206,32 @@ let rec analyse_tds_instruction tds i =
             let info = InfoVar (Undefined, 0, "") in
             (* Création du pointeur sur l'information *)
             let ia = info_to_info_ast info in
+            let nt1 = analyser_type tds t1 in
             (* Ajout de l'information (pointeur) dans la tds *)
             ajouter n_tds n1 ia;
             let ne2 = analyse_tds_expression n_tds e2 in
             let ne3 = analyse_tds_expression n_tds e3 in
             let nb = List.map (analyse_tds_instruction n_tds) li in
-            Pour(t1,ne1,ne2,ne3,nb,ia)
+            Pour(nt1,ne1,ne2,ne3,nb,ia)
         | Some _ ->
             (* L'identifiant est trouvé dans la tds locale, 
             il a donc déjà été déclaré dans le bloc courant *) 
             raise (DoubleDeclaration n1))
       else
         failwith ""
+    | AstSyntax.DeclTypeNom(t,n) ->
+      (match chercherLocalement tds n with
+      | None ->
+          let info = InfoType (t) in
+          (* Création du pointeur sur l'information *)
+          let ia = info_to_info_ast info in
+          (* Ajout de l'information (pointeur) dans la tds *)
+          ajouter tds n ia;
+          Empty
+      | Some _ ->
+          (* L'identifiant est trouvé dans la tds locale, 
+          il a donc déjà été déclaré dans le bloc courant *) 
+          raise (DoubleDeclaration n))
       
 (* analyse_tds_bloc : AstSyntax.bloc -> Asttds.bloc *)
 (* Paramètre tds : la table des symboles courante *)
@@ -224,7 +254,9 @@ and analyse_tds_bloc tds li =
 (* Vérifie la bonne utilisation des identifiants et tranforme la fonction
 en une fonction de type Asttds.fonction *)
 (* Erreur si mauvaise utilisation des identifiants *)
-let analyse_tds_fonction maintds (AstSyntax.Fonction(t,n,lp,li,e))  =
+let analyse_tds_fonction maintds (AstSyntax.Fonction(tf,n,lpf,li,e))  =
+  let t = analyser_type maintds tf in
+  let lp = List.map (fun (t,s) -> (analyser_type maintds t),s ) lpf in
   match chercherLocalement maintds n with
   | None -> 
     let info_f1 = InfoFun(Undefined, []) in

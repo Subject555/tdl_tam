@@ -12,6 +12,7 @@ struct
   type t1 = Ast.AstTds.programme
   type t2 = Ast.AstType.programme
 
+
   let rec analyse_type_affectable a=
     match a with
      | AstTds.Variable(info_ast) ->
@@ -21,6 +22,7 @@ struct
       InfoConst(_) -> modifier_type_info Int info_ast; (Int,Variable(info_ast))
       | InfoVar(t1,_,_) -> modifier_type_info t1 info_ast; (t1,Variable(info_ast))
       | InfoFun(t1,_) -> modifier_type_info t1 info_ast; (t1,Variable(info_ast))
+      | _ -> failwith ""
       )
       | AstTds.Deref(aff) -> let t1,v1 = analyse_type_affectable aff in 
                             (match t1 with

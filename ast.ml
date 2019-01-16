@@ -105,6 +105,7 @@ and instruction =
   | TantQue of expression * bloc
   (*Boucle Pour*)
   | Pour of typ * string * expression * expression * string  * expression * bloc
+  | DeclTypeNom of typ * string
 
 (* Structure des fonctions de Rat *)
 (* type de retour - nom - liste des paramètres (association type et nom) - corps de la fonction - valeur de retour *)
@@ -169,7 +170,7 @@ struct
                                   "FAIRE \n"^((List.fold_right (fun i tq -> (string_of_instruction i)^tq) b ""))^"\n"
     | Pour (t,n1,e1,e2,n2,e3,li) -> "Pour : FOR ("^(string_of_type t)^" "^n1^"="^(string_of_expression e1)^" ; "^(string_of_expression e2)^" ; "^n2^"="^(string_of_expression e3)^")\n"^
                                   ((List.fold_right (fun i tq -> (string_of_instruction i)^tq) li ""))^"\n"
-
+    | DeclTypeNom (t,n) -> "DeclTypeNom : type "^n^"="^(string_of_type t)^";\n"
   (* Conversion des fonctions *)
   let string_of_fonction (Fonction(t,n,lp,li,e)) = (string_of_type t)^" "^n^" ("^((List.fold_right (fun (t,n) tq -> (string_of_type t)^" "^n^" "^tq) lp ""))^") = \n"^
                                         ((List.fold_right (fun i tq -> (string_of_instruction i)^tq) li ""))^
