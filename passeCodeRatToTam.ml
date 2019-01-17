@@ -11,6 +11,9 @@ struct
   type t1 = Ast.AstPlacement.programme
   type t2 = string
 
+(* analyser_affectable : Rat.Ast.AstType.affectable -> Rat.Type.typ * string *)
+(* Paramètre : a -> affectable à analyser *)
+(* Fonction permettant d'obtenir le code tam d'un affectable *)
   let rec analyser_affectable a= 
     match a with
       AstType.Variable(info_a) -> 
@@ -37,6 +40,10 @@ struct
         \nLOADI (" ^string_of_int(getTaille t)^")\n")
       | _ -> raise(PasUnTableau)
       )
+
+(* analyser_expression : Rat.Ast.AstType.expression -> string *)
+(* Paramètre : e -> expression à analyser *)
+(* Fonction permettant d'obtenir le code tam d'une expression *)
   and analyser_expression e = 
     match e with
       AstType.Rationnel(e1,e2) -> 
@@ -76,13 +83,19 @@ struct
           let fle = List.fold_left (fun t e -> t^(analyser_expression e)) "" le in
           fle^"CALL (SB) "^n^"\n"
   
-  
+(* getTailleRef : typ -> typ *)
+(* Paramètre : t -> type dont au souhaite obtenir le type référencé *)
+(* Permet d'obtenir le type référencé par un Pointeur ou un Tableau *)
   let rec getTailleRef t =
     match t with 
       | Tab t -> getTailleRef t
       | Pt t -> getTailleRef t
       | _ -> getTaille t
-            
+    
+      
+(* analyser_affectable_g : Rat.Ast.AstType.affectable -> string *)
+(* Paramètre : a -> affectable à analyser *)
+(* Fonction permettant d'obtenir le code tam d'un affectable quand ce dernier est à gauche du egal dans une instruction*)
   let rec analyser_affectable_g a= 
     match a with
      AstType.Variable(info_a) -> 
@@ -95,9 +108,10 @@ struct
     | AstType.Indice(aff,e) -> let t_aff,v_aff = analyser_affectable aff in 
      v_aff^(analyser_expression e)^"LOADL "^string_of_int(getTailleRef t_aff)^"\nSUBR IMul\nSUBR IAdd\nSTOREI ("^string_of_int(getTailleRef t_aff)^")\n"
 
-     
-
-
+(* analyse_instruction : Rat.Ast.AstType.instruction -> int -> string * int *)
+(* Paramètre : i -> instruction à analyser *)
+(* Paramètre : pop -> taille du "pop" qu'il vas falloir faire à la fin du bloc *)
+(* Fonction permettant d'obtenir le code tam d'une instruction et la taille du "pop" qu'il vas falloir faire à la fin du bloc*)
   let rec analyse_instruction i pop = 
     match i with
     | Ast.AstType.Declaration(e,info) -> 
@@ -179,11 +193,17 @@ struct
     )
     | AstType.Empty -> "",pop
 
+(* analyse_bloc : Rat.Ast.AstType.bloc -> string * int *)
+(* Paramètre : li -> liste d'instructions à analyser *)
+(* Fonction permettant d'obtenir le code tam d'une suite d'instructions et la taille du "pop" qu'il vas falloir réaliser à la fin du bloc 
+(ce pop est fait dans l'analyse programme et instruction de if/else/for/while) *)
   and analyse_bloc li = 
     let code, taille = List.fold_left (fun (code,pop_s) t -> let anal,i_s = analyse_instruction t pop_s in (code^anal,i_s)) ("",0) li
     in code,taille
 
-
+(* analyse_fonction : Rat.Ast.AstPlacement.fonction -> string  *)
+(* Paramètre : f -> fonction à analyser *)
+(* Fonction permettant d'obtenir le code tam de la déclaration d'une fonction *)
   let analyse_fonction (Ast.AstPlacement.Fonction(n,li,e,info_a)) = 
     let info = info_ast_to_info info_a in
     match info with
@@ -197,6 +217,10 @@ struct
        "\nRETURN ("^(string_of_int (getTaille t))^")"^(string_of_int(List.fold_left (fun nb t -> (getTaille t) + nb) 0 t_args))^"\n"
     | _ -> failwith ""
 
+
+(* analyser : Rat.Ast.AstPlacement.Programme -> string  *)
+(* Paramètre : p -> programme à analyser *)
+(* Fonction permettant d'obtenir le code tam d'un programme *)
   let analyser (Ast.AstPlacement.Programme (fonctions, prog)) = 
     let prog_i = getEntete ()
     in let ltf = List.map (analyse_fonction) fonctions

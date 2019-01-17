@@ -12,9 +12,17 @@ struct
   type t1 = Ast.AstSyntax.programme
   type t2 = Ast.AstTds.programme
 
+
+(* analyser_type : typ -> typ *)
+(* Paramètre : t -> le type à analyser *)
+(* Paramètre : tds -> la tds courante où chercher les identifiants *)
+(* Fonction permettant d'obtenir le type réel à partir d'un type quelconque,
+  notamment à partir des types nommés ! *)
+(* Erreur si mauvaise utilisation des identifiants *)
   let rec analyser_type tds t =
     match t with 
     | TypeNom(s) -> 
+    (* Si t est un type Nommé on renvoi la type réel associé à t *)
       (match chercherGlobalement tds s with
         | None -> raise (IdentifiantNonDeclare s)
         | Some info -> 
@@ -24,12 +32,19 @@ struct
          )
       )
     | Pt(typ) -> 
+    (* Pour les types composites (Pt et Tab) on analyse leur type *)
       let anal_t = analyser_type tds typ in Pt(anal_t)
     | Tab(typ) -> 
       let anal_t = analyser_type tds typ in Tab(anal_t)
     | _ -> t
 
-
+(* analyse_tds_affectable : AstSyntax.Affectable -> Tds.tds -> bool -> Asttds.affectable *)
+(* Paramètre tds : la table des symboles courante *)
+(* Paramètre a : l'affectable à analyser *)
+(* Paramètre modif : est-on en train d'essayer de modifier la valeur de l'affectable *)
+(* Vérifie la bonne utilisation des identifiants et tranforme l'affectable
+en un affectable de type Asttds.affectable *)
+(* Erreur si mauvaise utilisation des identifiants ou si on essaye de modifier une constante *)
 let rec analyse_tds_affectable tds a modif =
   match a with
     |AstSyntax.Variable(nom) ->
@@ -48,6 +63,7 @@ let rec analyse_tds_affectable tds a modif =
               Variable(info)
             | Tds.InfoConst(_) ->
               if modif then
+              (* On ne peut pas modifier une constante ! *)
                 raise(MauvaiseUtilisationIdentifiant nom)
               else
                 Variable(info)
@@ -231,6 +247,8 @@ let rec analyse_tds_instruction tds i =
     | AstSyntax.DeclTypeNom(t,n) ->
       (match chercherLocalement tds n with
       | None ->
+       (* L'identifiant n'a pas été trouvé dans la tds locale, 
+          il n'a donc pas déjà été déclaré dans le bloc courant, on peut le créer *) 
           let info = InfoType (t) in
           (* Création du pointeur sur l'information *)
           let ia = info_to_info_ast info in
@@ -268,20 +286,25 @@ let analyse_tds_fonction maintds (AstSyntax.Fonction(tf,n,lpf,li,e))  =
   let lp = List.map (fun (t,s) -> (analyser_type maintds t),s ) lpf in
   match chercherLocalement maintds n with
   | None -> 
+    (* Pas de fonction de ce nom déjà déclarée, on peut la créer *)
     let info_f1 = InfoFun(Undefined, []) in
     let info_f = info_to_info_ast info_f1 in
     ajouter maintds n info_f;
+    (* On créer une nouvelle TDS pour l'intérieur de la fonction *)
     let tds = creerTDSFille(maintds) in
     let nlp = (List.map (
       fun (t,nom) -> 
       begin
         match chercherLocalement tds nom with
         | None ->
+        (* Aucun autre paramètre n'a ce nom, on peut le créer *)
           let inf = InfoVar (Undefined, 0, "") in
           let iv = info_to_info_ast inf in
           ajouter tds nom iv;
           (t,iv)
-        | Some _ -> raise(DoubleDeclaration nom)
+        | Some _ ->
+        (* Un paramètre avec ce nom existe déjà *)
+          raise(DoubleDeclaration nom)
       end
     ) lp) in
     let nli = List.map (analyse_tds_instruction tds) li in
@@ -289,6 +312,7 @@ let analyse_tds_fonction maintds (AstSyntax.Fonction(tf,n,lpf,li,e))  =
     Fonction(t,n,nlp,nli,ne,info_f)
 
   | Some _ ->  
+  (* Une focntion avec ce nom existe déjà *)
     raise (DoubleDeclaration n)
 
 
