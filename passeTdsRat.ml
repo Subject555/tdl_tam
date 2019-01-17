@@ -56,6 +56,9 @@ let rec analyse_tds_affectable tds a modif =
     |AstSyntax.Deref(aff) -> 
       let res = analyse_tds_affectable tds aff modif in
       Deref(res)
+    |AstSyntax.Indice(aff,e) -> let anal_a= analyse_tds_affectable tds aff modif in
+                                let anal_e= analyse_tds_expression tds e in
+                                Indice(anal_a,anal_e)
 
 
 (* analyse_tds_expression : AstSyntax.ast -> Asttds.expression *)
@@ -64,7 +67,7 @@ let rec analyse_tds_affectable tds a modif =
 (* Vérifie la bonne utilisation des identifiants et tranforme l'expression
 en une expression de type Asttds.expression *)
 (* Erreur si mauvaise utilisation des identifiants *)
-let rec analyse_tds_expression tds e = 
+and  analyse_tds_expression tds e = 
   match e with
   | AstSyntax.AppelFonction (nom,params) ->
     begin
@@ -112,6 +115,8 @@ let rec analyse_tds_expression tds e =
           il a donc déjà été déclaré *) 
       Adresse(info))
   | AstSyntax.Allocation(t)-> let nt = (analyser_type tds t) in Allocation(nt)
+  | AstSyntax.TabAllocation(t, e) -> let anal_e= analyse_tds_expression tds e in
+                                     TabAllocation(analyser_type tds t,anal_e)
   | AstSyntax.Valeur(aff) -> Valeur(analyse_tds_affectable tds aff false)
   | AstSyntax.Binaire (b,e1,e2) ->  
     let ne1 = analyse_tds_expression tds e1 in

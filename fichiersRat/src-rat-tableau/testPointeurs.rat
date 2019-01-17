@@ -1,0 +1,7 @@
+main{
+	int * [] t = (new int *[5]);
+	int x = 13;
+	(t[0]) = &x;
+	int z = (*(t[0]));
+	print z;
+}

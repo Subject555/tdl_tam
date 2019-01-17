@@ -1,3 +1,6 @@
 main {
 	type Int2 = int;
+	Int2 x = 8;
+	print x;
+
 }

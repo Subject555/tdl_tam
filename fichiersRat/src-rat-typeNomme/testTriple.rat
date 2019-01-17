@@ -1,0 +1,7 @@
+main {
+	type Int2 = int;
+	type Int3 = Int2;
+	type Int4 = Int3;
+	Int4 x = 3;
+	print x;
+}

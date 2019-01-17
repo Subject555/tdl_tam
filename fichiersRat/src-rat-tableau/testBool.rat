@@ -1,0 +1,6 @@
+main{
+	bool [] t = (new bool [5]);
+	(t[0]) = true;
+	bool z = (t[0]);
+	print z;
+}

@@ -1,3 +1,4 @@
+
 module PasseCodeRatToTam : Passe.Passe  with type t1 =  Ast.AstPlacement.programme and type t2 = string=
 struct
 
@@ -24,19 +25,12 @@ struct
                               Pt tp -> (tp, v1^"LOADI ("^string_of_int(getTaille tp)^")\n")
                             |_-> raise(PasUnPointeur) 
                             )
-
-  let rec analyser_affectable_g a= 
-    match a with
-     AstType.Variable(info_a) -> 
-     ( match info_ast_to_info info_a with
-      InfoVar(t,d,r)-> "STORE ("^(string_of_int(getTaille t))^") "^(string_of_int d)^"["^r^"]\n"
-     |_-> failwith "" 
-     )
-    | AstType.Deref(aff) -> let (t1,v1) = analyser_affectable aff in
-                            v1^"STOREI ("^(string_of_int(getTaille t1))^")\n "
-
-
-  let rec analyser_expression e = 
+    |AstType.Indice(aff,e) -> let t_aff,v_aff = analyser_affectable aff in
+    (match t_aff with
+      | Tab t ->(t, v_aff^(analyser_expression e)^"LOADL "^string_of_int(getTaille t)^"\n SUBR IMul\n SUBR IAdd\nLOADI (" ^string_of_int(getTaille t)^")\n")
+      | _ -> raise(PasUnTableau)
+      )
+  and analyser_expression e = 
     match e with
       AstType.Rationnel(e1,e2) -> 
         let val1 = analyser_expression e1 
@@ -56,7 +50,8 @@ struct
         | _ -> failwith("Fail Adresse")
       )
       | AstType.Valeur(aff) -> let _,s = analyser_affectable(aff) in s
-      | AstType.Allocation(t) ->  "LOADL "^(string_of_int(getTaille t))^"\n"^"SUBR MAlloc\n"
+      | AstType.Allocation(t) ->  "LOADL"^(string_of_int(getTaille t))^"\n"^"SUBR MAlloc\n"
+      | AstType.TabAllocation(t,e) ->  (analyser_expression e)^"LOADL "^string_of_int(getTaille t)^"\nSUBR IMul\nSUBR MAlloc\n"
       | AstType.Binaire(b,e1,e2) ->
         let val1 = analyser_expression e1 
         in let val2 = analyser_expression e2 in
@@ -72,7 +67,22 @@ struct
         
       | AstType.AppelFonction(n,le,info) -> 
           let fle = List.fold_left (fun t e -> t^(analyser_expression e)) "" le in
-          fle^"CALL (ST) "^n^"\n"
+          fle^"CALL (SB) "^n^"\n"
+
+  let rec analyser_affectable_g a= 
+    match a with
+     AstType.Variable(info_a) -> 
+     ( match info_ast_to_info info_a with
+      InfoVar(t,d,r)-> "STORE ("^(string_of_int(getTaille t))^") "^(string_of_int d)^"["^r^"]\n"
+     |_-> failwith "" 
+     )
+    | AstType.Deref(aff) -> let (t1,v1) = analyser_affectable aff in
+                            v1^"STOREI ("^(string_of_int(getTaille t1))^")\n "
+    | AstType.Indice(aff,e) -> let t_aff,v_aff = analyser_affectable aff in 
+     v_aff^(analyser_expression e)^"LOADL "^string_of_int(getTaille t_aff)^"\nSUBR IMul\nSUBR IAdd\nSTOREI ("^string_of_int(getTaille t_aff)^")\n"
+
+
+
 
   let rec analyse_instruction i pop = 
     match i with

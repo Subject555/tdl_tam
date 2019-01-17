@@ -1,0 +1,6 @@
+main{
+	rat [] t = (new rat [5]);
+	(t[0]) = [5/4];
+	rat z = (t[0]);
+	print z;
+}

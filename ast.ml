@@ -59,9 +59,11 @@ type  affectable =
   | Variable of string
   (* Dereferencement: accès à la valeur pointée par A*)
   | Deref of affectable
+  (* Acces à la case d'indice e du tableau a*)
+  | Indice of affectable * expression
 
 (* Expressions de Rat *)
-type expression =
+and expression =
   (* Appel de fonction représenté par le nom de la fonction et la liste des paramètres réels *)
   | AppelFonction of string * expression list 
   (* Rationnel représenté par le numérateur et le dénominateur *)
@@ -82,6 +84,8 @@ type expression =
   | Null
   (* Initialisation d'un nouveau pointeur du type précisé *)
   | Allocation of typ
+  (* Initialisation d'un nouveau tableau*)
+  | TabAllocation of typ * expression
   (* Accès à l'adresse d'une variable*)
   | Adresse of string 
   (* Opération binaire représentée par l'opérateur, l'opérande gauche et l'opérande droite *)
@@ -138,10 +142,10 @@ struct
     match a with
   | Variable n -> n^" "
   | Deref (aff) -> "*"^(string_of_affectable(aff))^" "
-  
+  | Indice (aff, e) -> "("^(string_of_affectable(aff))^"["^(string_of_expression e)^"])"
 
   (* Conversion des expressions *)
-  let rec string_of_expression e =
+  and string_of_expression e =
     match e with
     | AppelFonction (n,le) -> "call "^n^"("^((List.fold_right (fun i tq -> (string_of_expression i)^tq) le ""))^") "
     | Rationnel (e1,e2) -> "["^(string_of_expression e1)^"/"^(string_of_expression e2)^"] "
@@ -149,11 +153,12 @@ struct
     | Denominateur e1 ->  "denom "^(string_of_expression e1)^" "
     | True -> "true "
     | False -> "false "
-    | Entier i -> (string_of_int i)^" "
+    | Entier i -> (string_of_int i)
     | Valeur(aff) -> string_of_affectable(aff)^" "
     | Null -> "null"
     | Adresse(n) -> "&"^n^" "
-    | Allocation(t) ->"new "^string_of_type(t)^" "
+    | Allocation(t) ->"(new "^string_of_type(t)^")"
+    | TabAllocation (t,e) -> "(new "^(string_of_type t)^" ["^(string_of_expression e)^"])"
     | Binaire (b,e1,e2) -> (string_of_expression e1)^(string_of_binaire b)^(string_of_expression e2)^" "
 
   (* Conversion des instructions *)
@@ -199,10 +204,11 @@ struct
   type affectable = 
     | Variable of Tds.info_ast (* le nom de l'identifiant est remplacé par ses informations *)
     | Deref of affectable
+    | Indice of affectable * expression 
   (* Expressions existantes dans notre langage *)
   (* ~ expression de l'AST syntaxique où les noms des identifiants ont été 
   remplacés par les informations associées aux identificateurs *)
-  type expression =
+    and  expression =
     | AppelFonction of string * expression list * Tds.info_ast (* le nom de la fonction est gardé car il sera nécessaire au moment de la génération de code*)
     | Rationnel of expression * expression
     | Numerateur of expression
@@ -213,6 +219,7 @@ struct
     | Valeur of affectable
     | Null 
     | Allocation of typ
+    | TabAllocation of typ * expression
     | Adresse of Tds.info_ast
     | Binaire of AstSyntax.binaire * expression * expression
 
@@ -254,10 +261,11 @@ type binaire = PlusInt | PlusRat | MultInt | MultRat | EquInt | EquBool | Inf
 type affectable = 
   | Variable of Tds.info_ast (* le nom de l'identifiant est remplacé par ses informations *)
   | Deref of affectable
+  | Indice of affectable * expression 
 
 (* Expressions existantes dans Rat *)
 (* = expression de AstTds *)
-type expression =
+and expression =
   | AppelFonction of string * expression list * Tds.info_ast
   | Rationnel of expression * expression
   | Numerateur of expression
@@ -268,6 +276,7 @@ type expression =
   | Valeur of affectable
   | Null 
   | Allocation of typ
+  | TabAllocation of typ * expression
   | Adresse of Tds.info_ast
   | Binaire of binaire * expression * expression
 
