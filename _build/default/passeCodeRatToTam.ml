@@ -1,3 +1,4 @@
+
 module PasseCodeRatToTam : Passe.Passe  with type t1 =  Ast.AstPlacement.programme and type t2 = string=
 struct
 
@@ -10,7 +11,26 @@ struct
   type t1 = Ast.AstPlacement.programme
   type t2 = string
 
-  let rec analyser_expression e = 
+  let rec analyser_affectable a= 
+    match a with
+      AstType.Variable(info_a) -> 
+      let info = info_ast_to_info info_a in
+      (match info with
+        InfoVar(t,dep,reg) -> (t,"LOAD ("^(string_of_int(getTaille t))^") "^(string_of_int dep)^"["^reg^"]\n")
+        | InfoConst(entier) -> (Int,"LOADL "^(string_of_int entier)^"\n")
+        | _ -> failwith("Fail Ident")
+      )
+     |AstType.Deref(aff) -> let t1,v1 = analyser_affectable aff in
+                            (match t1 with
+                              Pt tp -> (tp, v1^"LOADI ("^string_of_int(getTaille tp)^")\n")
+                            |_-> raise(PasUnPointeur) 
+                            )
+    |AstType.Indice(aff,e) -> let t_aff,v_aff = analyser_affectable aff in
+    (match t_aff with
+      | Tab t ->(t, v_aff^(analyser_expression e)^"LOADL "^string_of_int(getTaille t)^"\n SUBR IMul\n SUBR IAdd\nLOADI (" ^string_of_int(getTaille t)^")\n")
+      | _ -> raise(PasUnTableau)
+      )
+  and analyser_expression e = 
     match e with
       AstType.Rationnel(e1,e2) -> 
         let val1 = analyser_expression e1 
@@ -20,16 +40,18 @@ struct
         analyser_expression e1^"POP (0) 1\n"
       | AstType.Denominateur(e1) -> 
         analyser_expression e1^"POP (1) 1\n"
-      | AstType.Ident(info_a) -> 
-        let info = info_ast_to_info info_a in
-        (match info with
-          InfoVar(t,dep,reg) -> "LOAD ("^(string_of_int(getTaille t))^") "^(string_of_int dep)^"["^reg^"]\n"
-          | InfoConst(entier) -> "LOADL "^(string_of_int entier)^"\n"
-          | _ -> failwith("Fail Ident")
-        )
       | AstType.True -> "LOADL 1\n"
       | AstType.False -> "LOADL 0\n"
       | AstType.Entier(i) -> "LOADL "^(string_of_int i)^"\n"
+      | AstType.Null -> "LOADL 0\n"
+      | AstType.Adresse(info_a)-> let info = info_ast_to_info info_a in
+      (match info with
+        InfoVar(_,dep,reg) -> "LOADA "^(string_of_int dep)^"["^reg^"]\n"
+        | _ -> failwith("Fail Adresse")
+      )
+      | AstType.Valeur(aff) -> let _,s = analyser_affectable(aff) in s
+      | AstType.Allocation(t) ->  "LOADL"^(string_of_int(getTaille t))^"\n"^"SUBR MAlloc\n"
+      | AstType.TabAllocation(t,e) ->  (analyser_expression e)^"LOADL "^string_of_int(getTaille t)^"\nSUBR IMul\nSUBR MAlloc\n"
       | AstType.Binaire(b,e1,e2) ->
         let val1 = analyser_expression e1 
         in let val2 = analyser_expression e2 in
@@ -47,6 +69,21 @@ struct
           let fle = List.fold_left (fun t e -> t^(analyser_expression e)) "" le in
           fle^"CALL (SB) "^n^"\n"
 
+  let rec analyser_affectable_g a= 
+    match a with
+     AstType.Variable(info_a) -> 
+     ( match info_ast_to_info info_a with
+      InfoVar(t,d,r)-> "STORE ("^(string_of_int(getTaille t))^") "^(string_of_int d)^"["^r^"]\n"
+     |_-> failwith "" 
+     )
+    | AstType.Deref(aff) -> let (t1,v1) = analyser_affectable aff in
+                            v1^"STOREI ("^(string_of_int(getTaille t1))^")\n "
+    | AstType.Indice(aff,e) -> let t_aff,v_aff = analyser_affectable aff in 
+     v_aff^(analyser_expression e)^"LOADL "^string_of_int(getTaille t_aff)^"\nSUBR IMul\nSUBR IAdd\nSTOREI ("^string_of_int(getTaille t_aff)^")\n"
+
+
+
+
   let rec analyse_instruction i pop = 
     match i with
     | Ast.AstType.Declaration(e,info) -> 
@@ -60,17 +97,8 @@ struct
           "STORE ("^(string_of_int (getTaille t))^") "^(string_of_int dep)^"["^reg^"]\n",(pop + (getTaille t))
         | _ -> failwith "Fail declaration"
       )
-    | AstType.Affectation(e,info_ast) -> 
-        let anal_e = analyser_expression e in
-        let info = info_ast_to_info info_ast in
-        ( match info with
-          InfoVar(t, dep, reg) -> 
-            "PUSH "^(string_of_int (getTaille t))^
-            "\n"^anal_e^
-            "STORE ("^(string_of_int (getTaille t))^") "^(string_of_int dep)^"["^reg^"]\n",pop
-          | _ -> failwith "Fail affectation"
-        )
-
+    | AstType.Affectation(a,e) -> (analyser_expression e)^(analyser_affectable_g a), pop   
+  
     | AstType.AffichageInt(e) -> 
       let anal = analyser_expression e in
         anal^

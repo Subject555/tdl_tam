@@ -43,7 +43,8 @@ open Ast.AstSyntax
 (* Type de l'attribut synthétisé des non-terminaux *)
 %type <programme> prog
 %type <instruction list> bloc
-%type <fonction> fonc
+%type <dfs list> ldfs
+%type <dfs > dfs
 %type <instruction list> is
 %type <instruction> i
 %type <typ> typ
@@ -60,10 +61,16 @@ open Ast.AstSyntax
 main : lfi = prog EOF     {let a = lfi in ((Ast.PrinterAstSyntax.print_programme a);a)}
 
 prog :
-| lf = fonc  lfi = prog   {let (Programme (lf1,li))=lfi in (Programme (lf::lf1,li))}
-| ID li = bloc            {Programme ([],li)}
+| ldfs_1=ldfs ID li = bloc ldfs_2=ldfs {Programme(ldfs_1,li,ldfs_2)}
 
-fonc : t=typ n=ID PO p=dp PF AO li=is RETURN exp=e PV AF {Fonction(t,n,p,li,exp)}
+ldfs :
+| {[]}
+| dfs1=dfs ldfs1=ldfs              {dfs1::ldfs1}
+
+dfs :
+| t=typ n=ID PO p=dp PF AO li=is RETURN exp=e PV AF {Fonction(t,n,p,li,exp)}
+| t=typ n=ID PO p=dp PF PV {Prototype(t,n,p)}
+
 
 bloc : AO li = is AF      {li}
 

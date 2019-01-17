@@ -30,7 +30,7 @@ Clflags.include_dirs :=
   ; "/opt/opam/4.06.0/lib/sexplib0"
   ; "/opt/opam/4.06.0/lib/utop"
   ; "/opt/opam/4.06.0/lib/zed"
-  ; "/home/mdubois5/2A/Trad_langues/Tp2/_build/default/.rat.objs"
+  ; "/home/ymehidi/2SN/Traduction de Language/tdl_tam/_build/default/.rat.objs"
   ];
 
 UTop_main.main ();

@@ -1,4 +1,4 @@
-
+(*
 open Compilateur
 open Code
 (* Changer le chemin d'accès du jar. *)
@@ -118,3 +118,4 @@ let%expect_test "factfuns" =
 let%expect_test "complique" =
   runtam "../../fichiersRat/src-rat-tam-test/complique.rat";
   [%expect{| [9/4][27/14][27/16][3/2] |}]
+  *)

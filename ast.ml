@@ -5,9 +5,10 @@ module type Ast =
 sig
    type expression
    type instruction
-   type fonction
    type programme
    type affectable
+   type dfs
+   
   
 end
 
@@ -28,10 +29,9 @@ val string_of_instruction : A.instruction -> string
 (* transforme un affectable en chaîne de caractère *)
 val string_of_affectable : A.affectable -> string
 
-(* string_of_fonction :  fonction -> string *)
-(* transforme une fonction en chaîne de caractère *)
-val string_of_fonction : A.fonction -> string
-
+(* string_of_prototype:  prototype -> string *)
+(* transforme un prototype en chaîne de caractère *)
+val string_of_dfs : A.dfs -> string
 
 (* string_of_ast :  ast -> string *)
 (* transforme un ast en chaîne de caractère *)
@@ -108,13 +108,15 @@ and instruction =
   (*Boucle TantQue représentée par la conditin d'arrêt de la boucle et le bloc d'instructions *)
   | TantQue of expression * bloc
 
-(* Structure des fonctions de Rat *)
-(* type de retour - nom - liste des paramètres (association type et nom) - corps de la fonction - valeur de retour *)
-type fonction = Fonction of typ * string * (typ * string) list * bloc * expression
+(* Structure des prototypes de Rat *)
+(* type de retour - nom - liste des paramètres (association type et nom) *)
+type dfs = 
+| Fonction of typ * string * (typ * string) list * bloc * expression
+| Prototype of typ * string * (typ * string) list 
 
 (* Structure d'un programme Rat *)
 (* liste de fonction - programme principal *)
-type programme = Programme of fonction list * bloc
+type programme = Programme of dfs list * bloc * dfs list
 
 end
 
@@ -172,14 +174,16 @@ struct
                                   "FAIRE \n"^((List.fold_right (fun i tq -> (string_of_instruction i)^tq) b ""))^"\n"
 
   (* Conversion des fonctions *)
-  let string_of_fonction (Fonction(t,n,lp,li,e)) = (string_of_type t)^" "^n^" ("^((List.fold_right (fun (t,n) tq -> (string_of_type t)^" "^n^" "^tq) lp ""))^") = \n"^
-                                        ((List.fold_right (fun i tq -> (string_of_instruction i)^tq) li ""))^
-                                        "Return "^(string_of_expression e)^"\n"
+  let string_of_dfs d = match d with
+                          |Fonction(t,n,lp,li,e) ->(string_of_type t)^" "^n^" ("^((List.fold_right (fun (t,n) tq -> (string_of_type t)^" "^n^" "^tq) lp ""))^") = \n"^
+                                  ((List.fold_right (fun i tq -> (string_of_instruction i)^tq) li ""))^"Return "^(string_of_expression e)^"\n"
+                          |Prototype(t,n,lp)-> (string_of_type t)^" "^n^" ("^((List.fold_right (fun (t,n) tq -> (string_of_type t)^" "^n^" "^tq) lp ""))^")\n"
 
   (* Conversion d'un programme Rat *)
-  let string_of_programme (Programme (fonctions, instruction)) =
-    (List.fold_right (fun f tq -> (string_of_fonction f)^tq) fonctions "")^
-    (List.fold_right (fun i tq -> (string_of_instruction i)^tq) instruction "")
+  let string_of_programme (Programme (ld1,li,ld2)) =
+    (List.fold_right (fun d1 tq -> (string_of_dfs d1)^tq) ld1 "")^
+    (List.fold_right (fun i tq -> (string_of_instruction i)^tq) li "")^
+    (List.fold_right (fun d2 tq -> (string_of_dfs d2)^tq) ld2 "")
 
   (* Affichage d'un programme Rat *)
   let print_programme programme =
@@ -235,10 +239,11 @@ struct
   (* Structure des fonctions dans notre langage *)
   (* type de retour - nom - liste des paramètres (association type et information sur les paramètres) - corps de la fonction - valeur de retour - information sur la fonction*)
   (* le nom de la fonction est gardé car il sera nécessaire au moment de la génération de code*)
-  type fonction = Fonction of typ * string * (typ * Tds.info_ast ) list * bloc * expression * Tds.info_ast
+  type dfs = 
+    | Fonction of typ * string * (typ * Tds.info_ast ) list * bloc * expression * Tds.info_ast
 
   (* Structure d'un programme dans notre langage *)
-  type programme = Programme of fonction list * bloc
+  type programme = Programme of dfs list * bloc * dfs list
 
 end
     
@@ -289,10 +294,12 @@ type bloc = instruction list
   | Empty (* les nœuds ayant disparus: Const *)
 
 (* nom, liste des paramètres, corps, expression de retour, informations associées à l'identificateur *)
-type fonction = Fonction of string * Tds.info_ast list * bloc * expression * Tds.info_ast
+type dfs =
+  |Fonction of string * Tds.info_ast list * bloc * expression * Tds.info_ast 
+
 
 (* Structure d'un programme dans notre langage *)
-type programme = Programme of fonction list * bloc
+type programme = Programme of dfs list * bloc * dfs list
 
 end
 
@@ -319,9 +326,11 @@ type bloc = instruction list
 
 (* nom, corps, expression de retour, informations associées à l'identificateur *)
 (* Plus besoin de la liste des paramètres *)
-type fonction = Fonction of string * bloc * expression * Tds.info_ast
+type dfs =
+  Fonction of string * bloc * expression * Tds.info_ast
+  | Prototype of string  * Tds.info_ast
 
 (* Structure d'un programme dans notre langage *)
-type programme = Programme of fonction list * bloc
+type programme = Programme of dfs list * bloc * dfs list
 
 end

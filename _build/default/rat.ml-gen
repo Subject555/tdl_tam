@@ -34,6 +34,9 @@ module PasseTypeRat = Rat__PasseTypeRat
 (** @canonical Rat.Tds *)
 module Tds = Rat__Tds
 
+(** @canonical Rat.TestARBRE *)
+module TestARBRE = Rat__TestARBRE
+
 (** @canonical Rat.TestPlacement *)
 module TestPlacement = Rat__TestPlacement
 

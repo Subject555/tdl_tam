@@ -11,6 +11,17 @@ struct
   type t1 = Ast.AstSyntax.programme
   type t2 = Ast.AstTds.programme
 
+
+let rec analyser_type tds t =
+    match t with 
+    | Pt(typ) -> 
+      let anal_t = analyser_type tds typ in Pt(anal_t)
+    | Tab(typ) -> 
+      let anal_t = analyser_type tds typ in Tab(anal_t)
+| _ -> t
+
+
+
 let rec analyse_tds_affectable tds a modif =
   match a with
     |AstSyntax.Variable(nom) ->
@@ -65,7 +76,7 @@ and  analyse_tds_expression tds e =
         begin
           let info_nast = info_ast_to_info info in
           match info_nast with
-          | Tds.InfoFun(_,_) -> 
+          | Tds.InfoFun(_,_,_) -> 
             let nparams = List.map (analyse_tds_expression tds) params in AppelFonction(nom,nparams,info)
           | _ -> 
             raise(MauvaiseUtilisationIdentifiant nom)
@@ -204,43 +215,65 @@ and analyse_tds_bloc tds li =
 (* Vérifie la bonne utilisation des identifiants et tranforme la fonction
 en une fonction de type Asttds.fonction *)
 (* Erreur si mauvaise utilisation des identifiants *)
-let analyse_tds_fonction maintds (AstSyntax.Fonction(t,n,lp,li,e))  =
-  match chercherLocalement maintds n with
-  | None -> 
-    let info_f1 = InfoFun(Undefined, []) in
-    let info_f = info_to_info_ast info_f1 in
-    ajouter maintds n info_f;
-    let tds = creerTDSFille(maintds) in
-    let nlp = (List.map (
-      fun (t,nom) -> 
-      begin
-        match chercherLocalement tds nom with
-        | None ->
-          let inf = InfoVar (Undefined, 0, "") in
-          let iv = info_to_info_ast inf in
-          ajouter tds nom iv;
-          (t,iv)
-        | Some _ -> raise(DoubleDeclaration nom)
-      end
-    ) lp) in
-    let nli = List.map (analyse_tds_instruction tds) li in
-    let ne = analyse_tds_expression tds e in
-    Fonction(t,n,nlp,nli,ne,info_f)
-
-  | Some _ ->  
-    raise (DoubleDeclaration n)
+let analyse_tds_fonction maintds t n lp li e info_f  =
+  let tds = creerTDSFille(maintds) in
+  let nlp = (List.map (
+        fun (t,nom) -> 
+        begin
+          match chercherLocalement tds nom with
+          | None ->
+            let inf = InfoVar (Undefined, 0, "") in
+            let iv = info_to_info_ast inf in
+            ajouter tds nom iv;
+            (t,iv)
+          | Some _ -> raise(DoubleDeclaration nom)
+        end
+      ) lp) in
+      let nli = List.map (analyse_tds_instruction tds) li in
+      let ne = analyse_tds_expression tds e in
+      Fonction(t,n,nlp,nli,ne,info_f)
 
 
+let analyse_tds_dfs maintds dfs ldfs =
+  match dfs with
+    |AstSyntax.Fonction(t,n,lp,li,e) ->( match chercherLocalement maintds n with
+    | None -> 
+      let info_f1 = InfoFun(Undefined, [],true) in
+      let info_f = info_to_info_ast info_f1 in
+      ajouter maintds n info_f;
+     (analyse_tds_fonction maintds t n lp li e info_f)::ldfs
+
+    | Some info_ast ->
+        (match info_ast_to_info info_ast with
+          | InfoFun(_,_,implant)-> 
+              if (implant) then
+                raise (DoubleDeclaration n)
+              else
+                modifier_i_fonction_info true info_ast;
+                (analyse_tds_fonction maintds t n lp li e info_ast)::ldfs
+          | _-> failwith ""
+        )
+    )
+    |AstSyntax.Prototype(t,n,lp) ->  (match chercherLocalement maintds n with
+	 | None -> let list_typ,_ = list.split lp in
+		   let list_typ_anal = list.map (analyse_type maintds) list_typ in
+		   ajouter maintds n (info_to_info_ast (InfoFun (analyse_type maintds t, list_typ_anal,false)));
+		   ldfs
+
+         | Some info_ast ->  raise (DoubleDeclaration n)
+ 
+        )
 
 (* analyser : AstSyntax.ast -> Asttds.ast *)
 (* Paramètre : le programme à analyser *)
 (* Vérifie la bonne utilisation des identifiants et tranforme le programme
 en un programme de type Asttds.ast *)
 (* Erreur si mauvaise utilisation des identifiants *)
-let analyser (AstSyntax.Programme (fonctions,prog)) =
+let analyser (AstSyntax.Programme (ldfs1,bloc,ldfs2)) =
   let maintds = creerTDSMere() in
-  let nf = List.map ( analyse_tds_fonction maintds ) fonctions in
-    Programme(nf, analyse_tds_bloc maintds prog)
+  let df1 = List.map ( analyse_tds_dfs maintds ) ldfs1 in
+  let df2 = List.map ( analyse_tds_dfs maintds ) ldfs2 in
+    Programme(df1, analyse_tds_bloc maintds bloc,df2)
   
 end
 

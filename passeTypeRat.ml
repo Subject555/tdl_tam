@@ -21,7 +21,7 @@ struct
       (match info with
       InfoConst(_) -> modifier_type_info Int info_ast; (Int,Variable(info_ast))
       | InfoVar(t1,_,_) -> modifier_type_info t1 info_ast; (t1,Variable(info_ast))
-      | InfoFun(t1,_) -> modifier_type_info t1 info_ast; (t1,Variable(info_ast))
+      | InfoFun(t1,_,_) -> modifier_type_info t1 info_ast; (t1,Variable(info_ast))
       )
       | AstTds.Deref(aff) -> let t1,v1 = analyse_type_affectable aff in 
                             (match t1 with
@@ -78,7 +78,7 @@ struct
       (match info with
         InfoConst(_) -> modifier_type_info Int info_ast; (Int,Adresse(info_ast))
         | InfoVar(t1,_,_) -> modifier_type_info t1 info_ast; (t1,Adresse(info_ast))
-        | InfoFun(t1,_) -> modifier_type_info t1 info_ast; (t1,Adresse(info_ast))
+        | InfoFun(t1,_,_) -> modifier_type_info t1 info_ast; (t1,Adresse(info_ast))
     )
     | AstTds.Valeur(aff) -> let t1,v1= analyse_type_affectable(aff) in 
                               (t1,Valeur(v1)) 
@@ -122,7 +122,8 @@ struct
       let info = info_ast_to_info info_ast in
       begin
       match info with
-      InfoFun(type_f,ldef_t) -> 
+      InfoFun(type_f,ldef_t,implant) -> 
+if implant then
         let rec aux_appel liste ldef=
           begin
           match liste,ldef with
@@ -137,7 +138,8 @@ struct
           end
         in let lv = aux_appel l ldef_t in
         let () = modifier_type_info type_f info_ast in
-        (type_f,AppelFonction(nom,lv,info_ast))           
+        (type_f,AppelFonction(nom,lv,info_ast))
+else raise(FonctionDeclareeNonImplantee)           
       | _ -> failwith ""
       end
             
@@ -193,21 +195,27 @@ and analyse_type_bloc li =
    
 
 
-let analyse_type_fonction (AstTds.Fonction(t,n,lp,li,e,info))  =
+let analyse_type_fonction t n lp li e info  =
   let rec params_type liste = 
     match liste with
       | [] -> ();
       | (t,i)::q -> modifier_type_info t i; params_type q
   in params_type lp;
   let tpl = List.map (function x,y -> x) lp
-  in let () = modifier_type_fonction_info t tpl info
-  in let v2 = analyse_type_bloc li in
-  let t1,v1 = analyse_type_expression e in
-  if (t=t1) then
-    let nlp = List.map (function x,y -> y) lp
-    in Fonction(n,nlp,v2,v1,info)
-  else
-    raise(TypeInattendu(t1,t))
+  in (match info_ast_to_info info
+	|InfoFun(_,lpd,_) ->  if (not est_compatible lpd tpl ) then
+		 raise(ImplantationNonCompatibleDeclaration n)
+  		else
+  		let () = modifier_type_fonction_info t tpl info
+  		in let v2 = analyse_type_bloc li in
+ 		 let t1,v1 = analyse_type_expression e in
+  		if (t=t1) then
+    			let nlp = List.map (function x,y -> y) lp
+    			in Fonction(n,nlp,v2,v1,info)
+  		else
+    		raise(TypeInattendu(t1,t))
+	|_->failwith"")
+
 
 
 
@@ -216,9 +224,10 @@ let analyse_type_fonction (AstTds.Fonction(t,n,lp,li,e,info))  =
   (* Vérifie la bonne utilisation des types et tranforme le programme
   en un programme de type Asttype.ast *)
   (* Erreur si mauvaise utilisation des types *)
-  let analyser (AstTds.Programme (fonctions,prog)) =
-    let l_f = List.map analyse_type_fonction fonctions in
+  let analyser (AstTds.Programme (f1,prog,f2)) =
+    let lf1 = List.map analyse_type_fonction f1 in
     let bloc = analyse_type_bloc prog in
-    Programme(l_f,bloc)
+    let lf2 = List.map analyse_type_fonction f2 in
+    Programme(lf1,bloc,lf2)
 
 end
