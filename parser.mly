@@ -9,6 +9,7 @@ open Ast.AstSyntax
 
 %token <int> ENTIER
 %token <string> ID
+%token <string> TID
 %token RETURN
 %token PV
 %token AO
@@ -59,7 +60,7 @@ open Ast.AstSyntax
 
 %%
 
-main : lfi = prog EOF     {let a = lfi in ((Ast.PrinterAstSyntax.print_programme a);a)}
+main : lfi = prog EOF     {let a = lfi in a}
 
 prog :
 | lf = fonc  lfi = prog   {let (Programme (lf1,li))=lfi in (Programme (lf::lf1,li))}
@@ -81,7 +82,7 @@ i :
 | IF exp=e li1=bloc ELSE li2=bloc   {Conditionnelle (exp,li1,li2)}
 | WHILE exp=e li=bloc               {TantQue (exp,li)}
 | FOR PO t=typ n1=ID EQUAL e1=e PV e2=e PV n2=ID EQUAL e3=e PF li=bloc {Pour (t,n1,e1,e2,n2,e3,li)}
-| TYPEN n=ID EQUAL t=typ PV {DeclTypeNom(t,n)}
+| TYPEN n=TID EQUAL t=typ PV {DeclTypeNom(t,n)}
 
 aff :
 | n=ID                    {Variable n}
@@ -99,7 +100,7 @@ typ :
 | t=typ MULT  {Pt t}
 | t=typ CO CF {Tab t}
 | PO t=typ PF {t}(*mettre un nom*)
-| n=ID {TypeNom n}
+| n=TID {TypeNom n}
 
 e : 
 | CALL n=ID PO lp=cp PF   {AppelFonction (n,lp)}

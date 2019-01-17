@@ -27,7 +27,14 @@ struct
                             )
     |AstType.Indice(aff,e) -> let t_aff,v_aff = analyser_affectable aff in
     (match t_aff with
-      | Tab t ->(t, v_aff^(analyser_expression e)^"LOADL "^string_of_int(getTaille t)^"\n SUBR IMul\n SUBR IAdd\nLOADI (" ^string_of_int(getTaille t)^")\n")
+      | Tab t ->
+        (t, 
+        v_aff^
+        (analyser_expression e)^
+        "LOADL "^ string_of_int(getTaille t)^
+        "\n SUBR IMul
+        \n SUBR IAdd
+        \nLOADI (" ^string_of_int(getTaille t)^")\n")
       | _ -> raise(PasUnTableau)
       )
   and analyser_expression e = 
@@ -35,7 +42,7 @@ struct
       AstType.Rationnel(e1,e2) -> 
         let val1 = analyser_expression e1 
         in let val2 = analyser_expression e2 
-        in val1^val2
+        in val1^val2^"CALL (ST) norm\n"
       | AstType.Numerateur(e1) -> 
         analyser_expression e1^"POP (0) 1\n"
       | AstType.Denominateur(e1) -> 
@@ -50,7 +57,7 @@ struct
         | _ -> failwith("Fail Adresse")
       )
       | AstType.Valeur(aff) -> let _,s = analyser_affectable(aff) in s
-      | AstType.Allocation(t) ->  "LOADL"^(string_of_int(getTaille t))^"\n"^"SUBR MAlloc\n"
+      | AstType.Allocation(t) ->  "LOADL "^(string_of_int(getTaille t))^"\n"^"SUBR MAlloc\n"
       | AstType.TabAllocation(t,e) ->  (analyser_expression e)^"LOADL "^string_of_int(getTaille t)^"\nSUBR IMul\nSUBR MAlloc\n"
       | AstType.Binaire(b,e1,e2) ->
         let val1 = analyser_expression e1 
@@ -68,7 +75,14 @@ struct
       | AstType.AppelFonction(n,le,info) -> 
           let fle = List.fold_left (fun t e -> t^(analyser_expression e)) "" le in
           fle^"CALL (SB) "^n^"\n"
-
+  
+  
+  let rec getTailleRef t =
+    match t with 
+      | Tab t -> getTailleRef t
+      | Pt t -> getTailleRef t
+      | _ -> getTaille t
+            
   let rec analyser_affectable_g a= 
     match a with
      AstType.Variable(info_a) -> 
@@ -79,9 +93,9 @@ struct
     | AstType.Deref(aff) -> let (t1,v1) = analyser_affectable aff in
                             v1^"STOREI ("^(string_of_int(getTaille t1))^")\n "
     | AstType.Indice(aff,e) -> let t_aff,v_aff = analyser_affectable aff in 
-     v_aff^(analyser_expression e)^"LOADL "^string_of_int(getTaille t_aff)^"\nSUBR IMul\nSUBR IAdd\nSTOREI ("^string_of_int(getTaille t_aff)^")\n"
+     v_aff^(analyser_expression e)^"LOADL "^string_of_int(getTailleRef t_aff)^"\nSUBR IMul\nSUBR IAdd\nSTOREI ("^string_of_int(getTailleRef t_aff)^")\n"
 
-
+     
 
 
   let rec analyse_instruction i pop = 

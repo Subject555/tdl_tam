@@ -119,7 +119,7 @@ let%expect_test "complique" =
   runtam "../../fichiersRat/src-rat-tam-test/complique.rat";
   [%expect{| [9/4][27/14][27/16][3/2] |}]
 
-let%expect_test "test_tam_fjsd" = 
+let%expect_test "test_tam_test" = 
   runtam "../../fichiersRat/test.rat";
  [%expect{| [4/3] |}]
 
@@ -152,6 +152,8 @@ let%expect_test "test_tam_fjsd" =
   runtam "../../fichiersRat/src-rat-pointeurs/testOperations.rat";
   [%expect{| 815falsetrue |}]
 
+  (*  Tests des Boucles Pour  *)
+
   let%expect_test "test_Pour_Simple" = 
   runtam "../../fichiersRat/src-rat-pour/testSimple.rat";
   [%expect{| 01234 |}]
@@ -175,3 +177,62 @@ let%expect_test "test_tam_fjsd" =
   let%expect_test "test_Pour_ImbriqueParam" = 
   runtam "../../fichiersRat/src-rat-pour/testImbriqueParam.rat";
   [%expect{| 0010120123 |}]
+
+  (* Tests de Tableaux *)
+
+  let%expect_test "test_Tab_Int" = 
+  runtam "../../fichiersRat/src-rat-tableau/testInt.rat";
+  [%expect{| 3 |}]
+
+  let%expect_test "test_Tab_Bool" = 
+  runtam "../../fichiersRat/src-rat-tableau/testBool.rat";
+  [%expect{| true |}]
+
+  let%expect_test "test_Tab_Pointeurs" = 
+  runtam "../../fichiersRat/src-rat-tableau/testPointeurs.rat";
+  [%expect{| 13 |}] 
+
+  let%expect_test "test_Tab_Rempli" = 
+  runtam "../../fichiersRat/src-rat-tableau/testRempli.rat";
+  [%expect{| 12345 |}]
+
+  let%expect_test "test_Tab_Rat" = 
+  runtam "../../fichiersRat/src-rat-tableau/testRat.rat";
+  [%expect{| [5/4] |}]
+
+ let%expect_test "test_Tab_Operations" = 
+  runtam "../../fichiersRat/src-rat-tableau/testOperations.rat";
+  [%expect{| 02468 |}]
+  
+  (* Tests de Types Nommés *)
+  
+  let%expect_test "test_TypeNom_Rat" = 
+  runtam "../../fichiersRat/src-rat-typeNomme/testRat.rat";
+  [%expect{| [2/1] |}]
+
+  let%expect_test "test_TypeNom_Int" = 
+  runtam "../../fichiersRat/src-rat-typeNomme/testInt.rat";
+  [%expect{| 8 |}]
+
+  let%expect_test "test_TypeNom_Bool" = 
+  runtam "../../fichiersRat/src-rat-typeNomme/testBool.rat";
+  [%expect{| true |}]
+
+  let%expect_test "test_TypeNom_Pt" = 
+  runtam "../../fichiersRat/src-rat-typeNomme/testPt.rat";
+  [%expect{| 2 |}]
+
+  let%expect_test "test_TypeNom_Tab" = 
+  runtam "../../fichiersRat/src-rat-typeNomme/testTab.rat";
+  [%expect{| 2 |}]
+
+  let%expect_test "test_TypeNom_Double" = 
+  runtam "../../fichiersRat/src-rat-typeNomme/testDouble.rat";
+  [%expect{| [2/1] |}]
+
+  let%expect_test "test_TypeNom_Triple" = 
+  runtam "../../fichiersRat/src-rat-typeNomme/testTriple.rat";
+  [%expect{| 3 |}]
+
+  
+  
