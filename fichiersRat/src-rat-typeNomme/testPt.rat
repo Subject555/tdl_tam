@@ -1,0 +1,7 @@
+main {
+	type PtInt2 = int *;
+	int y = 2;
+	PtInt2 x = &y;
+	int rx = (* x);
+	print rx;
+}

@@ -1,0 +1,9 @@
+main {
+	type TabInt2 = int [];
+	type Int2 = int;
+	TabInt2 t = (new Int2 [5]);
+	Int2 y = 2;
+	(t[3]) = y;
+	print (t[3]);
+
+}

@@ -232,4 +232,18 @@ let%expect_test "test_tam_test" =
   [%expect{| 3 |}]
 
   
+  (* Tests des prototypes *)
+  open Exceptions
+
+  exception ErreurNonDetectee
   
+  let%expect_test "test_Proto_MauvaiseImplant" = 
+  try 
+  let _ = runtam "../../fichiersRat/src-rat-prototypes/testMauvaiseImplant.rat"
+  in  raise ErreurNonDetectee
+  with
+  | TypeInattendu(Rat,Int) -> ()
+
+  let%expect_test "test_Proto_Prototype" = 
+  runtam "../../fichiersRat/src-rat-prototypes/testPrototype.rat";
+  [%expect{| 5[2/3] |}]
