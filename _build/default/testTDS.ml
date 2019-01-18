@@ -3,7 +3,7 @@ open Compilateur
 open Exceptions
 
 exception ErreurNonDetectee;;
-(*
+
 
 let%test_unit "test"= 
   let _ = compiler "../../fichiersRat/src-rat-tds-test/test.rat" in ()
@@ -280,4 +280,3 @@ let%test_unit "testRecursiviteVariable" =
 
 let%test_unit "testRecursiviteFonction" = 
   let _ = compiler "../../fichiersRat/src-rat-tds-test/testRecursiviteFonction.rat" in ()
-*)

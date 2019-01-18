@@ -3,7 +3,9 @@
 
 type token = 
   | WHILE
+  | TYPEN
   | TRUE
+  | TID of (string)
   | SLASH
   | RETURN
   | RAT
@@ -20,6 +22,7 @@ type token =
   | INF
   | IF
   | ID of (string)
+  | FOR
   | FALSE
   | EQUAL
   | EOF

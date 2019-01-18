@@ -9,6 +9,7 @@ open Ast.AstSyntax
 
 %token <int> ENTIER
 %token <string> ID
+%token <string> TID
 %token RETURN
 %token PV
 %token AO
@@ -39,6 +40,8 @@ open Ast.AstSyntax
 %token NULL
 %token NEW
 %token EOF
+%token FOR
+%token TYPEN
 
 (* Type de l'attribut synthétisé des non-terminaux *)
 %type <programme> prog
@@ -58,7 +61,7 @@ open Ast.AstSyntax
 
 %%
 
-main : lfi = prog EOF     {let a = lfi in ((Ast.PrinterAstSyntax.print_programme a);a)}
+main : lfi = prog EOF     {let a = lfi in a}
 
 prog :
 | ldfs_1=ldfs ID li = bloc ldfs_2=ldfs {Programme(ldfs_1,li,ldfs_2)}
@@ -70,7 +73,6 @@ ldfs :
 dfs :
 | t=typ n=ID PO p=dp PF AO li=is RETURN exp=e PV AF {Fonction(t,n,p,li,exp)}
 | t=typ n=ID PO p=dp PF PV {Prototype(t,n,p)}
-
 
 bloc : AO li = is AF      {li}
 
@@ -85,6 +87,8 @@ i :
 | PRINT e1=e PV                     {Affichage (e1)}
 | IF exp=e li1=bloc ELSE li2=bloc   {Conditionnelle (exp,li1,li2)}
 | WHILE exp=e li=bloc               {TantQue (exp,li)}
+| FOR PO t=typ n1=ID EQUAL e1=e PV e2=e PV n2=ID EQUAL e3=e PF li=bloc {Pour (t,n1,e1,e2,n2,e3,li)}
+| TYPEN n=TID EQUAL t=typ PV {DeclTypeNom(t,n)}
 
 aff :
 | n=ID                    {Variable n}
@@ -102,6 +106,7 @@ typ :
 | t=typ MULT  {Pt t}
 | t=typ CO CF {Tab t}
 | PO t=typ PF {t}(*mettre un nom*)
+| n=TID {TypeNom n}
 
 e : 
 | CALL n=ID PO lp=cp PF   {AppelFonction (n,lp)}

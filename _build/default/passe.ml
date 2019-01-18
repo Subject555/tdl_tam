@@ -72,11 +72,10 @@ struct
   let analyser a = ()
 
 end
-
+(*
 (* Passe AstPlacement.programme -> string *)
 (* Affiche les adresses des variables  *)
 (* Pour tester les paramètres des fonctions, il est nécessaire de les mettre en retour *)
-(*
 module PasseAffichePlacement : Passe  with type t1 =  Ast.AstPlacement.programme and type t2 = string=
 struct
   type t1 = Ast.AstPlacement.programme

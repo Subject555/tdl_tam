@@ -22,6 +22,7 @@ rule token = parse
 | "const"   {CONST}
 | "print"   {PRINT}
 | "if"      {IF}
+| "for"     {FOR}
 | "else"    {ELSE}
 | "while"   {WHILE}
 | "bool"    {BOOL}
@@ -41,10 +42,13 @@ rule token = parse
 | "&"       {ADR}
 | "Null"    {NULL}
 | "new"     {NEW}
+| "type"    {TYPEN}
 | ['0'-'9']+ as i
     { ENTIER (int_of_string i) }
 | ['a'-'z'](['A'-'Z''a'-'z''0'-'9']|"-"|"_")* as n
-    { ID n }
+    {ID n }
+| ['A'-'Z'](['A'-'Z''a'-'z''0'-'9']|"-"|"_")* as n
+    {TID n }
 | eof
     { EOF }
 | _

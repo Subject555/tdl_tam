@@ -3,7 +3,7 @@ open Compilateur
 open Exceptions
 
 exception ErreurNonDetectee
-(*
+
 
 let%test_unit "test"= 
   let _ = compiler "../../fichiersRat/src-rat-type-test/test.rat" in ()
@@ -462,4 +462,3 @@ let%test_unit "testOperation11"=
 let%test_unit "testOperation12"= 
   let _ = compiler "../../fichiersRat/src-rat-type-test/testOperation12.rat" in ()
 
-*)

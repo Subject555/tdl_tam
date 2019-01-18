@@ -5,7 +5,8 @@ open Type
 type info =
   | InfoConst of int
   | InfoVar of typ * int * string
-  | InfoFun of typ * typ list
+  | InfoFun of typ * typ list * bool
+  | InfoType of typ
 
 (* Données stockées dans la tds  et dans les AST : pointeur sur une information *)
 type info_ast = info ref  
@@ -49,7 +50,7 @@ let string_of_info info =
   match info with
   | InfoConst value -> "Constante "^(string_of_int value)
   | InfoVar (t,dep,base) -> "Variable "^(string_of_type t)^" "^(string_of_int dep)^"["^base^"]"
-  | InfoFun (t,tp) -> "Fonction "^(List.fold_right (fun elt tq -> if tq = "" then (string_of_type elt) else (string_of_type elt)^" * "^tq) tp "" )^
+  | InfoFun (t,tp,implant) -> "Fonction "^(List.fold_right (fun elt tq -> if tq = "" then (string_of_type elt) else (string_of_type elt)^" * "^tq) tp "" )^
                       " -> "^(string_of_type t)
 
 
@@ -76,7 +77,7 @@ let modifier_type_info t i =
 
 let modifier_type_fonction_info t tp i =
     match !i with
-    |InfoFun(_,_) -> i:= InfoFun(t,tp)
+    |InfoFun(_,_,implant) -> i:= InfoFun(t,tp,implant)
     | _ -> ()
 
 let modifier_adresse_info d b i =
@@ -84,3 +85,7 @@ let modifier_adresse_info d b i =
     |InfoVar (t,_,_) -> i:= InfoVar (t,d,b)
     | _ -> ()
    
+let  modifier_implant_fonction_info b i =
+  match !i with 
+  |InfoFun(t,tp,_) -> i:= InfoFun(t,tp,b)
+  | _ -> ()

@@ -6,6 +6,7 @@ type info =
   | InfoConst of int
   | InfoVar of typ * int * string
   | InfoFun of typ * typ list * bool
+  | InfoType of typ
 
 (* Données stockées dans la tds  et dans les AST : pointeur sur une information *)
 type info_ast = info ref  
@@ -79,13 +80,12 @@ let modifier_type_fonction_info t tp i =
     |InfoFun(_,_,implant) -> i:= InfoFun(t,tp,implant)
     | _ -> ()
 
-let modifier_implant_fonction_info implant i =
-    match !i with
-    |InfoFun(t,tp,_) -> i:= InfoFun(t,tp,implant)
-    | _ -> ()
-
 let modifier_adresse_info d b i =
     match !i with
     |InfoVar (t,_,_) -> i:= InfoVar (t,d,b)
     | _ -> ()
    
+let  modifier_implant_fonction_info b i =
+  match !i with 
+  |InfoFun(t,tp,_) -> i:= InfoFun(t,tp,b)
+  | _ -> ()

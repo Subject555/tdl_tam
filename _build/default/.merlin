@@ -26,5 +26,5 @@ S /opt/opam/4.06.0/lib/ppx_inline_test/runtime-lib
 S /opt/opam/4.06.0/lib/ppx_sexp_conv/runtime-lib
 S /opt/opam/4.06.0/lib/sexplib0
 S .
-FLG -ppx ''\''/home/ymehidi/2SN/Traduction de Language/tdl_tam/_build/default/.ppx/jbuild/ppx_inline_test+ppx_expect/ppx.exe'\'' --as-ppx --cookie '\''library-name="rat"'\'''
+FLG -ppx '/home/mdubois5/2A/Trad_langues/Tp2/_build/default/.ppx/jbuild/ppx_inline_test+ppx_expect/ppx.exe --as-ppx --cookie '\''library-name="rat"'\'''
 FLG -open Rat -w -40

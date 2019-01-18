@@ -7,9 +7,10 @@ type info =
   (* Information associée à une variable : son type, et son adresse 
   ie son déplacement (int) par rapport à un registre (string) *)
   | InfoVar of typ * int * string
-  (* Information associée à une fonction : son type de retour et la liste
+   (* Information associée à une fonction : son type de retour et la liste
   des types des paramètres *)
   | InfoFun of typ * typ list * bool
+  | InfoType of typ
 
 (* Table des symboles *)
 type tds 
